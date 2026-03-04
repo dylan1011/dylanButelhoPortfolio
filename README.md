@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Software Developer Portfolio
 
 A responsive Next.js portfolio with a dark theme and teal accent. Includes Home, About, Experience, Education, Skills, and Contact.
@@ -39,3 +40,6 @@ A generated hero image is in `public/hero-visual.png`. If it’s missing, the ho
 - `app/` — Next.js App Router (layout, pages)
 - `components/` — shared components (Navbar, HeroVisual)
 - `public/` — static assets (e.g. hero image)
+=======
+# dylanButelhoPortfolio
+>>>>>>> 6f0c06a5ab33b172f30f70c84c3d1d590816c222
