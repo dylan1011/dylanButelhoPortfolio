@@ -1,0 +1,545 @@
+/* Education page — accordion, rings, cert ticker */
+
+.edu-accordion {
+  padding: 0 1.5rem;
+  max-width: 1400px;
+  margin: 3rem auto 0;
+}
+@media (min-width: 640px) {
+  .edu-accordion {
+    padding: 0 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .edu-accordion {
+    padding: 0 2.5rem;
+  }
+}
+@media (min-width: 1280px) {
+  .edu-accordion {
+    padding: 0 3rem;
+  }
+}
+.edu-acc-item {
+  border-bottom: 1px solid var(--portfolio-border, rgba(0, 0, 0, 0.08));
+  overflow: hidden;
+}
+.dark .edu-acc-item {
+  border-bottom-color: var(--portfolio-border);
+}
+.edu-acc-trigger {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s;
+}
+@media (min-width: 640px) {
+  .edu-acc-trigger {
+    gap: 2rem;
+    padding: 2.5rem 0;
+  }
+}
+.edu-acc-trigger:hover .edu-acc-title {
+  color: var(--portfolio-blue);
+}
+.edu-acc-idx {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  color: var(--portfolio-mid-gray);
+  width: 3rem;
+  flex-shrink: 0;
+}
+.edu-acc-title {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--portfolio-black);
+  transition: color 0.25s;
+}
+@media (min-width: 640px) {
+  .edu-acc-title {
+    font-size: 1.75rem;
+  }
+}
+@media (min-width: 1024px) {
+  .edu-acc-title {
+    font-size: 2rem;
+  }
+}
+.dark .edu-acc-title {
+  color: var(--portfolio-white);
+}
+.edu-acc-school-sm {
+  font-size: 0.9rem;
+  color: var(--portfolio-mid-gray);
+  letter-spacing: 0.05em;
+  margin-top: 0.3rem;
+}
+.edu-acc-year {
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--portfolio-mid-gray);
+  flex-shrink: 0;
+}
+.edu-acc-arrow {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--portfolio-border, rgba(0, 0, 0, 0.12));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s, background 0.25s;
+  font-size: 1.1rem;
+  color: var(--portfolio-mid-gray);
+  flex-shrink: 0;
+}
+.dark .edu-acc-arrow {
+  border-color: var(--portfolio-border);
+}
+.edu-acc-item.open .edu-acc-arrow {
+  transform: rotate(45deg);
+  border-color: var(--portfolio-blue);
+  color: var(--portfolio-blue);
+  background: rgba(0, 87, 255, 0.08);
+}
+.dark .edu-acc-item.open .edu-acc-arrow {
+  background: var(--portfolio-blue-dim);
+}
+.edu-acc-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.edu-acc-item.open .edu-acc-body {
+  max-height: 1200px;
+}
+.edu-acc-inner {
+  overflow: visible;
+}
+.edu-acc-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 0 0 2.5rem 0;
+}
+@media (min-width: 768px) {
+  .edu-acc-content {
+    grid-template-columns: 1fr 1fr;
+    padding: 0 0 3rem 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .edu-acc-content {
+    padding: 0 0 4rem 2.5rem;
+  }
+}
+.edu-acc-desc {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--portfolio-mid-gray);
+}
+.dark .edu-acc-desc {
+  color: var(--portfolio-muted2);
+}
+.edu-acc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.edu-acc-tag {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--portfolio-border, rgba(0, 0, 0, 0.15));
+  color: var(--portfolio-mid-gray);
+  transition: all 0.22s;
+}
+.dark .edu-acc-tag {
+  border-color: var(--portfolio-border2);
+  color: var(--portfolio-muted2);
+}
+.edu-acc-tag:hover {
+  border-color: var(--portfolio-blue);
+  color: var(--portfolio-blue);
+  background: rgba(0, 87, 255, 0.06);
+}
+.dark .edu-acc-tag:hover {
+  background: var(--portfolio-blue-dim);
+}
+.edu-acc-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+}
+.edu-acc-hl {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--portfolio-mid-gray);
+  padding: 0.9rem 1.2rem;
+  background: var(--portfolio-gray);
+  transition: transform 0.25s, background 0.25s;
+}
+.dark .edu-acc-hl {
+  background: var(--portfolio-surface);
+  color: var(--portfolio-muted2);
+}
+.edu-acc-hl:hover {
+  transform: translateX(4px);
+  background: var(--portfolio-bg2);
+}
+.dark .edu-acc-hl:hover {
+  background: var(--portfolio-bg3);
+}
+.edu-acc-hl-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+  color: var(--portfolio-blue);
+}
+
+/* Mobile: reuse same max-height behavior; no special overrides needed */
+
+.edu-rings-wrap {
+  padding: 4rem 1rem 0;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+@media (min-width: 640px) {
+  .edu-rings-wrap {
+    padding: 4rem 1.5rem 0;
+  }
+}
+@media (min-width: 1024px) {
+  .edu-rings-wrap {
+    padding: 5rem 2rem 0;
+  }
+}
+@media (min-width: 1280px) {
+  .edu-rings-wrap {
+    padding: 5rem 3rem 0;
+  }
+}
+.edu-rings-title {
+  font-family: var(--font-mono), monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--portfolio-mid-gray);
+  margin-bottom: 2.5rem;
+}
+.dark .edu-rings-title {
+  color: var(--portfolio-muted2);
+}
+.edu-rings-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+/* arrows moved to scroller edges (edu-rings-edge-btn) */
+
+.edu-rings-scroller {
+  position: relative;
+}
+/* Mobile: 3+3 grid, no scroll; hide edge gradients */
+@media (max-width: 899px) {
+  .edu-rings-scroller::before,
+  .edu-rings-scroller::after {
+    display: none;
+  }
+}
+.edu-rings-scroller::before,
+.edu-rings-scroller::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 18px;
+  pointer-events: none;
+  z-index: 2;
+}
+.edu-rings-scroller::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--portfolio-bg) 0%, rgba(255, 255, 255, 0) 100%);
+}
+.edu-rings-scroller::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--portfolio-bg) 0%, rgba(255,  255,  255, 0) 100%);
+}
+.dark .edu-rings-scroller::before {
+  background: linear-gradient(90deg, var(--portfolio-black) 0%, rgba(0, 0, 0, 0) 100%);
+}
+.dark .edu-rings-scroller::after {
+  background: linear-gradient(270deg, var(--portfolio-black) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.edu-rings-edge-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid var(--portfolio-border, rgba(0, 0, 0, 0.15));
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--portfolio-black);
+  font-family: var(--font-mono), monospace;
+  font-size: 1.35rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, border-color 0.2s, color 0.2s, background 0.2s, opacity 0.2s;
+  z-index: 3;
+}
+.dark .edu-rings-edge-btn {
+  background: rgba(17, 24, 32, 0.9);
+  border-color: var(--portfolio-border2);
+  color: var(--portfolio-white);
+}
+.edu-rings-edge-btn-left { left: -6px; }
+.edu-rings-edge-btn-right { right: -6px; }
+
+.edu-rings-edge-btn:hover:not(:disabled) {
+  border-color: var(--portfolio-blue);
+  color: var(--portfolio-blue);
+  background: rgba(0, 87, 255, 0.08);
+}
+.dark .edu-rings-edge-btn:hover:not(:disabled) {
+  background: var(--portfolio-blue-dim);
+}
+.edu-rings-edge-btn:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+/* Arrows not used: mobile = grid (no scroll), desktop = single row */
+.edu-rings-edge-btn {
+  display: none;
+}
+.edu-rings {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  overflow-x: auto;
+  padding: 0.5rem 0 1rem;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  scroll-padding-left: 1rem;
+  scroll-padding-right: 1rem;
+}
+.edu-rings::-webkit-scrollbar {
+  height: 0;
+}
+/* Mobile: 2 or 3 per line depending on screen width */
+@media (max-width: 899px) {
+  .edu-rings-wrap {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    box-sizing: border-box;
+  }
+  .edu-rings {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    gap: 1.5rem 1rem;
+    overflow: visible;
+    padding: 0.75rem 0 1.5rem;
+    justify-items: center;
+    align-items: start;
+  }
+  .ring-item {
+    width: 100%;
+    max-width: 140px;
+    min-width: 0;
+  }
+  .ring-svg {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto;
+  }
+}
+/* Mobile medium: 3 per line */
+@media (min-width: 500px) and (max-width: 899px) {
+  .edu-rings {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .ring-item {
+    max-width: 120px;
+  }
+  .ring-svg {
+    width: 64px;
+    height: 64px;
+  }
+}
+@media (min-width: 900px) {
+  .edu-rings {
+    overflow-x: visible;
+    padding: 0;
+  }
+}
+.ring-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
+}
+.ring-svg {
+  width: 128px;
+  height: 128px;
+  transform: rotate(-90deg);
+}
+.ring-bg {
+  fill: none;
+  stroke: var(--portfolio-border, rgba(0, 0, 0, 0.12));
+  stroke-width: 4;
+}
+.dark .ring-bg {
+  stroke: var(--portfolio-border);
+}
+.ring-fg {
+  fill: none;
+  stroke: var(--portfolio-blue);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ring-item.go .ring-fg {
+  stroke-dashoffset: var(--offset, 0);
+}
+.ring-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--portfolio-mid-gray);
+  text-align: center;
+  line-height: 1.3;
+}
+.dark .ring-label {
+  color: var(--portfolio-muted2);
+}
+.ring-pct {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--portfolio-blue);
+}
+
+.cert-ticker-wrap {
+  margin-top: 5rem;
+  border-top: 1px solid var(--portfolio-border, rgba(0, 0, 0, 0.08));
+  border-bottom: 1px solid var(--portfolio-border, rgba(0, 0, 0, 0.08));
+  overflow: hidden;
+  background: var(--portfolio-bg);
+}
+.dark .cert-ticker-wrap {
+  border-color: var(--portfolio-border);
+  background: var(--portfolio-bg3);
+}
+.cert-ticker-label {
+  padding: 1rem 1.5rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--portfolio-mid-gray);
+  border-bottom: 1px solid var(--portfolio-border, rgba(0, 0, 0, 0.08));
+}
+.dark .cert-ticker-label {
+  border-bottom-color: var(--portfolio-border);
+}
+@media (min-width: 640px) {
+  .cert-ticker-label {
+    padding: 1rem 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .cert-ticker-label {
+    padding: 1.2rem 2.5rem;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-width: 1280px) {
+  .cert-ticker-label {
+    padding: 1.2rem 3rem;
+  }
+}
+.cert-ticker {
+  display: flex;
+  width: max-content;
+  animation: cert-ticker-scroll 22s linear infinite;
+}
+.cert-ticker:hover {
+  animation-play-state: paused;
+}
+@keyframes cert-ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.cert-tick-item {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem 2rem;
+  border-right: 1px solid var(--portfolio-border, rgba(0, 0, 0, 0.08));
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.dark .cert-tick-item {
+  border-right-color: var(--portfolio-border);
+}
+.cert-tick-item:hover {
+  background: var(--portfolio-gray);
+}
+.dark .cert-tick-item:hover {
+  background: var(--portfolio-surface);
+}
+.cert-tick-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--portfolio-blue);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.cert-tick-name {
+  font-size: 0.95rem;
+  color: var(--portfolio-black);
+}
+.dark .cert-tick-name {
+  color: var(--portfolio-white);
+}
+.cert-tick-org {
+  font-size: 0.8rem;
+  color: var(--portfolio-mid-gray);
+  margin-left: 0.25rem;
+}
+.cert-tick-yr {
+  font-size: 0.78rem;
+  color: var(--portfolio-blue);
+  margin-left: 0.5rem;
+}

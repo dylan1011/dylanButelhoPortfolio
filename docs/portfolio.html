@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alex Chen — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f5f2ed; --surface: #ffffff; --surface2: #ede9e3;
+      --border: #ddd9d2; --text: #1a1a1a; --muted: #888880;
+      --dimmed: #c8c4bc; --rust: #c05c3a; --rust-light: rgba(192,92,58,0.07);
+    }
+    html { scroll-behavior: smooth; }
+    body { background:var(--bg); color:var(--text); font-family:'JetBrains Mono',monospace; min-height:100vh; overflow-x:hidden; cursor:none; }
+
+    /* Noise */
+    body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:9997; opacity:0.2; }
+
+    /* Cursor */
+    #cursor-dot { position:fixed; z-index:9999; width:8px; height:8px; background:var(--rust); border-radius:50%; pointer-events:none; transform:translate(-50%,-50%); transition:width .3s,height .3s; }
+    #cursor-ring { position:fixed; z-index:9998; width:36px; height:36px; border:1.5px solid var(--rust); border-radius:50%; pointer-events:none; transform:translate(-50%,-50%); transition:width .35s cubic-bezier(.16,1,.3,1),height .35s cubic-bezier(.16,1,.3,1),opacity .3s; opacity:.5; }
+    body.cur-hover #cursor-dot { width:14px; height:14px; }
+    body.cur-hover #cursor-ring { width:54px; height:54px; opacity:.25; }
+
+    /* Scroll bar */
+    #scroll-bar { position:fixed; top:0; left:0; z-index:9000; height:2px; width:0; background:var(--rust); transition:width .08s; }
+
+    /* Page curtain */
+    #curtain { position:fixed; inset:0; z-index:700; background:var(--rust); transform:scaleX(0); transform-origin:left; pointer-events:none; }
+
+    /* Loader */
+    #loader { position:fixed; inset:0; z-index:9990; background:var(--bg); display:flex; align-items:center; justify-content:center; transition:opacity .6s,visibility .6s; }
+    #loader.out { opacity:0; visibility:hidden; }
+    .loader-word { font-family:'Playfair Display',serif; font-size:1.5rem; font-style:italic; }
+    .loader-word span { display:inline-block; opacity:0; animation:lchar .04s steps(1) forwards; }
+    @keyframes lchar { to { opacity:1; } }
+
+    /* Nav */
+    nav { position:fixed; top:0; left:0; right:0; z-index:800; display:flex; align-items:center; justify-content:space-between; padding:1.4rem 4rem; border-bottom:1px solid var(--border); background:rgba(245,242,237,.9); backdrop-filter:blur(16px); transform:translateY(-110%); transition:transform .7s cubic-bezier(.16,1,.3,1); }
+    nav.show { transform:translateY(0); }
+    .nav-logo { font-family:'Playfair Display',serif; font-size:1.1rem; font-style:italic; color:var(--rust); }
+    .nav-links { display:flex; gap:2.5rem; list-style:none; }
+    .nav-links a { color:var(--muted); text-decoration:none; font-size:.71rem; letter-spacing:.15em; text-transform:uppercase; position:relative; padding-bottom:3px; transition:color .25s; }
+    .nav-links a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:var(--rust); transition:width .35s cubic-bezier(.16,1,.3,1); }
+    .nav-links a:hover,.nav-links a.active { color:var(--rust); }
+    .nav-links a:hover::after,.nav-links a.active::after { width:100%; }
+    .nav-status { display:flex; align-items:center; gap:.5rem; font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+    .status-dot { width:6px; height:6px; background:#4caf7d; border-radius:50%; animation:sp 2s infinite; }
+    @keyframes sp { 0%,100%{box-shadow:0 0 0 0 rgba(76,175,125,.4)} 50%{box-shadow:0 0 0 5px rgba(76,175,125,0)} }
+
+    /* Pages */
+    .page { display:none; padding-top:5rem; min-height:100vh; }
+    .page.visible { display:block; }
+
+    /* Reveal */
+    .reveal { opacity:0; transform:translateY(28px); }
+    .reveal.show { animation:rup .65s cubic-bezier(.16,1,.3,1) forwards; }
+    @keyframes rup { to { opacity:1; transform:translateY(0); } }
+    .d1{animation-delay:.07s!important} .d2{animation-delay:.14s!important} .d3{animation-delay:.21s!important} .d4{animation-delay:.28s!important} .d5{animation-delay:.35s!important}
+
+    /* Section label */
+    .sec-label { font-size:.63rem; letter-spacing:.28em; text-transform:uppercase; color:var(--rust); margin-bottom:.6rem; }
+
+    /* BG shapes */
+    .bg-blob { position:fixed; border-radius:50%; pointer-events:none; z-index:0; opacity:.035; background:var(--rust); animation:blob 20s ease-in-out infinite; }
+    .bg-blob:nth-child(1){width:520px;height:520px;top:-160px;right:-80px;animation-delay:0s}
+    .bg-blob:nth-child(2){width:320px;height:320px;bottom:8%;left:-90px;animation-delay:-9s}
+    @keyframes blob{0%,100%{transform:translate(0,0)scale(1)}40%{transform:translate(20px,-28px)scale(1.04)}70%{transform:translate(-15px,22px)scale(.97)}}
+
+    /* ══ EDUCATION — Magazine Split Design ══ */
+
+    /* Top banner strip */
+    .edu-banner {
+      display:grid; grid-template-columns:1fr 1fr;
+      min-height:52vh; margin-top:0;
+    }
+    .edu-banner-left {
+      background:#1c1917; color:#f5f0e8;
+      padding:5rem 4rem 4rem; position:relative; overflow:hidden;
+      display:flex; flex-direction:column; justify-content:flex-end;
+    }
+    .edu-banner-left::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse at 80% 20%, rgba(192,92,58,.25) 0%, transparent 60%);
+      pointer-events:none;
+    }
+    .edu-big-year {
+      position:absolute; top:-1.5rem; left:3rem;
+      font-family:'Playfair Display',serif; font-size:14rem; font-weight:900;
+      color:transparent; -webkit-text-stroke:1px rgba(255,255,255,.08);
+      line-height:1; pointer-events:none; user-select:none;
+    }
+    .edu-banner-label { font-size:.62rem; letter-spacing:.3em; text-transform:uppercase; color:var(--rust); margin-bottom:1rem; }
+    .edu-banner-h1 {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(3rem,5vw,4.8rem); font-weight:900; line-height:1.05;
+      letter-spacing:-.02em; color:#f5f0e8;
+    }
+    .edu-banner-h1 em { font-style:italic; color:var(--rust); }
+    .edu-banner-sub { font-size:.75rem; color:rgba(245,240,232,.45); margin-top:1.2rem; line-height:1.7; max-width:340px; }
+
+    .edu-banner-right {
+      background:var(--surface); padding:5rem 4rem 4rem;
+      display:grid; grid-template-columns:1fr 1fr; gap:1px;
+    }
+    .edu-stat-block {
+      display:flex; flex-direction:column; justify-content:center;
+      padding:2rem; border:1px solid var(--border);
+      transition:background .25s;
+    }
+    .edu-stat-block:hover { background:var(--surface2); }
+    .edu-stat-n {
+      font-family:'Playfair Display',serif; font-size:3.2rem; font-weight:900;
+      color:var(--rust); line-height:1;
+    }
+    .edu-stat-l { font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-top:.4rem; }
+
+    /* Degree accordion */
+    .edu-accordion { padding:0 4rem; }
+    .edu-acc-item {
+      border-bottom:1px solid var(--border); overflow:hidden;
+    }
+    .edu-acc-trigger {
+      width:100%; display:grid; grid-template-columns:auto 1fr auto auto;
+      align-items:center; gap:2rem; padding:2.2rem 0;
+      background:transparent; border:none; cursor:none; text-align:left;
+      transition:background .2s;
+    }
+    .edu-acc-trigger:hover .edu-acc-title { color:var(--rust); }
+    .edu-acc-idx { font-size:.62rem; letter-spacing:.2em; color:var(--muted); width:2rem; }
+    .edu-acc-title { font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:700; color:var(--text); transition:color .25s; }
+    .edu-acc-school-sm { font-size:.7rem; color:var(--muted); letter-spacing:.05em; }
+    .edu-acc-year { font-size:.68rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); }
+    .edu-acc-arrow {
+      width:36px; height:36px; border:1px solid var(--border); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      transition:transform .45s cubic-bezier(.16,1,.3,1), border-color .25s, background .25s;
+      font-size:.9rem; color:var(--muted); flex-shrink:0;
+    }
+    .edu-acc-item.open .edu-acc-arrow { transform:rotate(45deg); border-color:var(--rust); color:var(--rust); background:var(--rust-light); }
+
+    .edu-acc-body {
+      display:grid; grid-template-rows:0fr;
+      transition:grid-template-rows .55s cubic-bezier(.16,1,.3,1);
+    }
+    .edu-acc-item.open .edu-acc-body { grid-template-rows:1fr; }
+    .edu-acc-inner { overflow:hidden; }
+    .edu-acc-content {
+      display:grid; grid-template-columns:1fr 1fr; gap:3rem;
+      padding:0 0 3rem 4rem;
+    }
+    .edu-acc-left { }
+    .edu-acc-desc { font-size:.8rem; line-height:1.85; color:#666660; }
+    .edu-acc-gpa {
+      display:inline-flex; align-items:center; gap:.6rem;
+      margin-top:1.4rem; font-size:.68rem; letter-spacing:.12em;
+      text-transform:uppercase; color:var(--rust);
+    }
+    .edu-acc-gpa-bar {
+      width:80px; height:3px; background:var(--border); position:relative; overflow:hidden; border-radius:2px;
+    }
+    .edu-acc-gpa-fill { position:absolute; top:0; left:0; height:100%; background:var(--rust); width:0; transition:width 1s cubic-bezier(.16,1,.3,1) .3s; }
+    .edu-acc-item.open .edu-acc-gpa-fill { width:var(--gw); }
+    .edu-acc-tags { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:1.4rem; }
+    .edu-acc-tag {
+      font-size:.61rem; letter-spacing:.1em; text-transform:uppercase;
+      padding:.28rem .65rem; border:1px solid var(--dimmed); color:var(--muted);
+      transition:all .22s; cursor:none;
+    }
+    .edu-acc-tag:hover { border-color:var(--rust); color:var(--rust); background:var(--rust-light); }
+    .edu-acc-right { }
+    .edu-acc-highlights { display:flex; flex-direction:column; gap:.8rem; margin-top:.3rem; }
+    .edu-acc-hl {
+      display:flex; gap:1rem; align-items:flex-start;
+      font-size:.75rem; line-height:1.6; color:#666660;
+      padding:.8rem 1rem; background:var(--surface2);
+      transition:transform .25s, background .25s;
+    }
+    .edu-acc-hl:hover { transform:translateX(4px); background:#e5e1db; }
+    .edu-acc-hl-icon { font-size:.9rem; flex-shrink:0; margin-top:.05rem; }
+
+    /* Radial skill rings */
+    .edu-rings-wrap { padding:4rem 4rem 0; }
+    .edu-rings-title { font-size:.62rem; letter-spacing:.28em; text-transform:uppercase; color:var(--muted); margin-bottom:2.5rem; }
+    .edu-rings { display:flex; gap:3rem; flex-wrap:wrap; align-items:center; }
+    .ring-item { display:flex; flex-direction:column; align-items:center; gap:.8rem; cursor:none; }
+    .ring-svg { width:80px; height:80px; transform:rotate(-90deg); }
+    .ring-bg { fill:none; stroke:var(--border); stroke-width:4; }
+    .ring-fg { fill:none; stroke:var(--rust); stroke-width:4; stroke-linecap:round; stroke-dasharray:220; stroke-dashoffset:220; transition:stroke-dashoffset 1.4s cubic-bezier(.16,1,.3,1); }
+    .ring-item.go .ring-fg { stroke-dashoffset:var(--offset); }
+    .ring-item:hover .ring-fg { stroke:var(--text); }
+    .ring-label { font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); text-align:center; transition:color .2s; }
+    .ring-item:hover .ring-label { color:var(--text); }
+    .ring-pct { font-size:.75rem; font-weight:700; color:var(--rust); }
+
+    /* Cert ticker */
+    .cert-ticker-wrap { margin-top:4rem; border-top:1px solid var(--border); border-bottom:1px solid var(--border); overflow:hidden; padding:0; background:var(--surface); }
+    .cert-ticker-label { padding:.7rem 4rem; font-size:.6rem; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); }
+    .cert-ticker { display:flex; width:max-content; animation:ticker 22s linear infinite; }
+    .cert-ticker:hover { animation-play-state:paused; }
+    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .cert-tick-item {
+      display:flex; align-items:center; gap:1.2rem;
+      padding:1.4rem 3rem; border-right:1px solid var(--border);
+      white-space:nowrap; transition:background .2s;
+    }
+    .cert-tick-item:hover { background:var(--surface2); }
+    .cert-tick-dot { width:6px; height:6px; background:var(--rust); border-radius:50%; flex-shrink:0; }
+    .cert-tick-name { font-size:.72rem; color:var(--text); }
+    .cert-tick-org { font-size:.62rem; color:var(--muted); margin-left:.3rem; }
+    .cert-tick-yr { font-size:.6rem; color:var(--rust); margin-left:.5rem; }
+
+    /* ── EXPERIENCE ────────────────── */
+    .exp-hero { padding:5rem 4rem 3rem; display:grid; grid-template-columns:1fr auto; align-items:end; gap:2rem; }
+    .exp-hero h1 { font-family:'Playfair Display',serif; font-size:clamp(3.5rem,7vw,6rem); font-weight:900; line-height:1.05; letter-spacing:-.02em; }
+    .exp-hero h1 span { display:block; color:var(--rust); font-style:italic; }
+    .exp-meta { text-align:right; }
+    .exp-yrs { font-family:'Playfair Display',serif; font-size:5rem; font-weight:700; color:var(--rust); line-height:1; }
+    .exp-yrs-label { font-size:.63rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-top:.3rem; }
+
+    /* Filters */
+    .filters { padding:0 4rem 2rem; display:flex; gap:.5rem; }
+    .fbtn { font-family:'JetBrains Mono',monospace; font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; padding:.4rem 1rem; border:1px solid var(--border); background:transparent; color:var(--muted); cursor:none; transition:all .25s; }
+    .fbtn:hover { border-color:var(--rust); color:var(--rust); }
+    .fbtn.active { background:var(--rust); border-color:var(--rust); color:#fff; }
+
+    /* Timeline */
+    .tl { padding:0 4rem; position:relative; }
+    .tl::before { content:''; position:absolute; left:calc(4rem + 1px); top:0; bottom:0; width:1px; background:linear-gradient(to bottom,transparent,var(--border) 6%,var(--border) 94%,transparent); }
+    .tl-progress { position:absolute; left:calc(4rem + 1px); top:0; width:1px; height:0; background:var(--rust); z-index:1; transition:height 1.8s cubic-bezier(.16,1,.3,1) .2s; }
+    .tl-progress.drawn { height:100%; }
+
+    .tl-item { display:grid; grid-template-columns:2.5rem 1fr; gap:2.5rem; position:relative; transition:opacity .35s,transform .35s; }
+    .tl-item.dimmed { opacity:.18; pointer-events:none; }
+
+    .tl-marker { display:flex; flex-direction:column; align-items:center; padding-top:2.8rem; }
+    .tl-dot { width:11px; height:11px; background:var(--bg); border:2px solid var(--dimmed); border-radius:50%; position:relative; z-index:2; transition:all .35s cubic-bezier(.16,1,.3,1); }
+    .tl-item:hover .tl-dot { background:var(--rust); border-color:var(--rust); transform:scale(1.55); box-shadow:0 0 0 7px rgba(192,92,58,.12); }
+
+    .tl-body { border-top:1px solid var(--border); padding:2.5rem 0 3.5rem; transition:padding-left .4s cubic-bezier(.16,1,.3,1); }
+    .tl-item:hover .tl-body { padding-left:.8rem; }
+
+    .tl-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:.5rem; }
+    .tl-role { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; letter-spacing:-.01em; }
+    .tl-period { font-size:.63rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); padding-top:.35rem; flex-shrink:0; }
+    .tl-company { font-size:.73rem; color:var(--rust); letter-spacing:.08em; text-transform:uppercase; margin-bottom:.2rem; }
+    .tl-loc { font-size:.67rem; color:var(--muted); margin-bottom:1.5rem; }
+    .tl-desc { font-size:.78rem; line-height:1.85; color:#666660; max-width:680px; }
+    .tl-wins { margin-top:1.4rem; display:flex; flex-direction:column; gap:.5rem; }
+    .win { display:flex; gap:.8rem; font-size:.73rem; color:#777770; line-height:1.5; transform:translateX(0); transition:transform .3s cubic-bezier(.16,1,.3,1); }
+    .tl-item:hover .win:nth-child(1){transform:translateX(6px);transition-delay:0s}
+    .tl-item:hover .win:nth-child(2){transform:translateX(6px);transition-delay:.05s}
+    .tl-item:hover .win:nth-child(3){transform:translateX(6px);transition-delay:.1s}
+    .win::before { content:'→'; color:var(--rust); flex-shrink:0; font-size:.7rem; margin-top:.05rem; }
+    .tl-stack { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:1.6rem; }
+    .pill { font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; background:var(--bg); color:var(--muted); padding:.3rem .7rem; border:1px solid var(--border); transition:all .25s; cursor:none; }
+    .pill:hover { border-color:var(--rust); color:var(--rust); background:var(--rust-light); transform:translateY(-2px); }
+
+    .badge { display:inline-flex; align-items:center; gap:.4rem; font-size:.58rem; letter-spacing:.15em; text-transform:uppercase; color:var(--rust); border:1px solid rgba(192,92,58,.4); padding:.2rem .6rem; margin-left:.8rem; vertical-align:middle; position:relative; top:-.2rem; font-family:'JetBrains Mono',monospace; }
+    .badge::before { content:''; width:5px; height:5px; background:var(--rust); border-radius:50%; animation:pulse 1.5s infinite; }
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+
+    /* Skills band */
+    .sk-band { margin:4rem 4rem 0; display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+    .sk-block { background:var(--surface); padding:1.8rem; transition:background .25s,transform .3s cubic-bezier(.16,1,.3,1); cursor:none; }
+    .sk-block:hover { background:var(--surface2); transform:translateY(-4px); }
+    .sk-title { font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--rust); margin-bottom:1rem; }
+    .sk-items { display:flex; flex-direction:column; gap:.4rem; }
+    .sk-item { font-size:.7rem; color:var(--muted); display:flex; align-items:center; gap:.5rem; transition:color .2s; }
+    .sk-block:hover .sk-item { color:var(--text); }
+    .sk-item::before { content:''; width:4px; height:4px; background:var(--dimmed); flex-shrink:0; transition:background .2s; }
+    .sk-block:hover .sk-item::before { background:var(--rust); }
+  </style>
+</head>
+<body>
+  <div class="bg-blob"></div>
+  <div class="bg-blob"></div>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div id="scroll-bar"></div>
+  <div id="curtain"></div>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="loader-word" id="lword"></div>
+  </div>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <div class="nav-logo">Alex Chen.</div>
+    <ul class="nav-links">
+      <li><a href="#" class="nl active" data-pg="education">Education</a></li>
+      <li><a href="#" class="nl" data-pg="experience">Experience</a></li>
+    </ul>
+    <div class="nav-status"><div class="status-dot"></div>Open to work</div>
+  </nav>
+
+  <!-- ══ EDUCATION ══ -->
+  <div id="page-education" class="page visible">
+
+    <!-- Split Banner -->
+    <div class="edu-banner reveal">
+      <div class="edu-banner-left">
+        <div class="edu-big-year">14</div>
+        <div class="edu-banner-label">01 — Academic Background</div>
+        <h1 class="edu-banner-h1">Foundations<br />of <em>craft.</em></h1>
+        <p class="edu-banner-sub">Two degrees. Four certifications. A decade of learning that never really stopped.</p>
+      </div>
+      <div class="edu-banner-right">
+        <div class="edu-stat-block reveal d1">
+          <div class="edu-stat-n"><span class="cu" data-t="2">0</span></div>
+          <div class="edu-stat-l">Degrees</div>
+        </div>
+        <div class="edu-stat-block reveal d2">
+          <div class="edu-stat-n"><span class="cu" data-t="4">0</span></div>
+          <div class="edu-stat-l">Certifications</div>
+        </div>
+        <div class="edu-stat-block reveal d3">
+          <div class="edu-stat-n"><span class="cu" data-t="6">0</span>+</div>
+          <div class="edu-stat-l">Years Building</div>
+        </div>
+        <div class="edu-stat-block reveal d4">
+          <div class="edu-stat-n">3.9+</div>
+          <div class="edu-stat-l">Avg GPA</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Degree Accordion -->
+    <div class="edu-accordion">
+
+      <div class="edu-acc-item reveal" id="acc0">
+        <button class="edu-acc-trigger" onclick="toggleAcc(0)">
+          <span class="edu-acc-idx">01</span>
+          <span>
+            <div class="edu-acc-title">B.S. Computer Science</div>
+            <div class="edu-acc-school-sm">Massachusetts Institute of Technology</div>
+          </span>
+          <span class="edu-acc-year">2014 — 2018</span>
+          <span class="edu-acc-arrow">+</span>
+        </button>
+        <div class="edu-acc-body">
+          <div class="edu-acc-inner">
+            <div class="edu-acc-content">
+              <div class="edu-acc-left">
+                <div class="edu-acc-desc">Focused on systems programming, algorithms, and distributed computing. Participated in competitive programming and co-authored a research paper on cache-efficient data structures published in ACM SIGPLAN.</div>
+                <div class="edu-acc-gpa">
+                  GPA 3.9 / 4.0
+                  <div class="edu-acc-gpa-bar"><div class="edu-acc-gpa-fill" style="--gw:97.5%"></div></div>
+                </div>
+                <div class="edu-acc-tags">
+                  <span class="edu-acc-tag">Systems</span><span class="edu-acc-tag">Algorithms</span><span class="edu-acc-tag">Distributed</span><span class="edu-acc-tag">Research</span><span class="edu-acc-tag">Competitive Programming</span>
+                </div>
+              </div>
+              <div class="edu-acc-right">
+                <div class="edu-acc-highlights">
+                  <div class="edu-acc-hl"><span class="edu-acc-hl-icon">📄</span>ACM SIGPLAN research paper on cache-efficient data structures</div>
+                  <div class="edu-acc-hl"><span class="edu-acc-hl-icon">🏆</span>Top 5% in ICPC regional qualifier, 2017</div>
+                  <div class="edu-acc-hl"><span class="edu-acc-hl-icon">🔬</span>Undergraduate research in MIT PDOS lab (Parallel & Distributed Operating Systems)</div>
+                  <div class="edu-acc-hl"><span class="edu-acc-hl-icon">👥</span>Teaching assistant for 6.006 Introduction to Algorithms</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="edu-acc-item reveal d1" id="acc1">
+        <button class="edu-acc-trigger" onclick="toggleAcc(1)">
+          <span class="edu-acc-idx">02</span>
+          <span>
+            <div class="edu-acc-title">M.S. Software Engineering</div>
+            <div class="edu-acc-school-sm">Carnegie Mellon University</div>
+          </span>
+          <span class="edu-acc-year">2018 — 2020</span>
+          <span class="edu-acc-arrow">+</span>
+        </button>
+        <div class="edu-acc-body">
+          <div class="edu-acc-inner">
+            <div class="edu-acc-content">
+              <div class="edu-acc-left">
+                <div class="edu-acc-desc">Specialized in large-scale software architecture and ML systems. Thesis explored real-time anomaly detection in distributed microservices, winning the Dean's Award for graduate research excellence.</div>
+                <div class="edu-acc-gpa">
+                  GPA 4.0 / 4.0
+                  <div class="edu-acc-gpa-bar"><div class="edu-acc-gpa-fill" style="--gw:100%"></div></div>
+                </div>
+                <div class="edu-acc-tags">
+                  <span class="edu-acc-tag">Architecture</span><span class="edu-acc-tag">ML Systems</span><span class="edu-acc-tag">Thesis</span><span class="edu-acc-tag">Dean's Award</span>
+                </div>
+              </div>
+              <div class="edu-acc-right">
+                <div class="edu-acc-highlights">
+                  <div class="edu-acc-hl"><span class="edu-acc-hl-icon">🎓</span>Dean's Award for Graduate Research Excellence 2020</div>
+                  <div class="edu-acc-hl"><span class="edu-acc-hl-icon">📡</span>Thesis: Real-time anomaly detection in distributed microservices at scale</div>
+                  <div class="edu-acc-hl"><span class="edu-acc-hl-icon">🤝</span>Industry partnership with Google on ML pipeline optimization</div>
+                  <div class="edu-acc-hl"><span class="edu-acc-hl-icon">📝</span>Guest lecturer: Advanced Software Architecture, Spring 2019</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /accordion -->
+
+    <!-- Radial Skill Rings -->
+    <div class="edu-rings-wrap reveal">
+      <div class="edu-rings-title">// Core Proficiencies</div>
+      <div class="edu-rings">
+        <div class="ring-item" data-offset="13.2"><svg class="ring-svg" viewBox="0 0 80 80"><circle class="ring-bg" cx="40" cy="40" r="35"/><circle class="ring-fg" cx="40" cy="40" r="35" style="--offset:13.2"/></svg><div class="ring-pct">94%</div><div class="ring-label">Distributed<br/>Systems</div></div>
+        <div class="ring-item" data-offset="22"><svg class="ring-svg" viewBox="0 0 80 80"><circle class="ring-bg" cx="40" cy="40" r="35"/><circle class="ring-fg" cx="40" cy="40" r="35" style="--offset:22"/></svg><div class="ring-pct">90%</div><div class="ring-label">Backend<br/>Engineering</div></div>
+        <div class="ring-item" data-offset="30.8"><svg class="ring-svg" viewBox="0 0 80 80"><circle class="ring-bg" cx="40" cy="40" r="35"/><circle class="ring-fg" cx="40" cy="40" r="35" style="--offset:30.8"/></svg><div class="ring-pct">86%</div><div class="ring-label">Cloud<br/>Infrastructure</div></div>
+        <div class="ring-item" data-offset="47.4"><svg class="ring-svg" viewBox="0 0 80 80"><circle class="ring-bg" cx="40" cy="40" r="35"/><circle class="ring-fg" cx="40" cy="40" r="35" style="--offset:47.4"/></svg><div class="ring-pct">78%</div><div class="ring-label">Machine<br/>Learning</div></div>
+        <div class="ring-item" data-offset="61.6"><svg class="ring-svg" viewBox="0 0 80 80"><circle class="ring-bg" cx="40" cy="40" r="35"/><circle class="ring-fg" cx="40" cy="40" r="35" style="--offset:61.6"/></svg><div class="ring-pct">72%</div><div class="ring-label">Frontend<br/>/ UI</div></div>
+        <div class="ring-item" data-offset="55"><svg class="ring-svg" viewBox="0 0 80 80"><circle class="ring-bg" cx="40" cy="40" r="35"/><circle class="ring-fg" cx="40" cy="40" r="35" style="--offset:55"/></svg><div class="ring-pct">75%</div><div class="ring-label">Data<br/>Engineering</div></div>
+      </div>
+    </div>
+
+    <!-- Scrolling Cert Ticker -->
+    <div class="cert-ticker-wrap" style="margin-top:4rem;padding-bottom:8rem">
+      <div class="cert-ticker-label">// Certifications &amp; Credentials — hover to pause</div>
+      <div class="cert-ticker" id="cticker">
+        <div class="cert-tick-item"><div class="cert-tick-dot"></div><span class="cert-tick-name">AWS Solutions Architect</span><span class="cert-tick-org">Amazon Web Services</span><span class="cert-tick-yr">2022</span></div>
+        <div class="cert-tick-item"><div class="cert-tick-dot"></div><span class="cert-tick-name">Google Cloud Professional</span><span class="cert-tick-org">Google Cloud</span><span class="cert-tick-yr">2023</span></div>
+        <div class="cert-tick-item"><div class="cert-tick-dot"></div><span class="cert-tick-name">Certified Kubernetes Administrator</span><span class="cert-tick-org">CNCF</span><span class="cert-tick-yr">2021</span></div>
+        <div class="cert-tick-item"><div class="cert-tick-dot"></div><span class="cert-tick-name">Meta Frontend Developer</span><span class="cert-tick-org">Meta · Coursera</span><span class="cert-tick-yr">2022</span></div>
+        <!-- duplicate for seamless loop -->
+        <div class="cert-tick-item"><div class="cert-tick-dot"></div><span class="cert-tick-name">AWS Solutions Architect</span><span class="cert-tick-org">Amazon Web Services</span><span class="cert-tick-yr">2022</span></div>
+        <div class="cert-tick-item"><div class="cert-tick-dot"></div><span class="cert-tick-name">Google Cloud Professional</span><span class="cert-tick-org">Google Cloud</span><span class="cert-tick-yr">2023</span></div>
+        <div class="cert-tick-item"><div class="cert-tick-dot"></div><span class="cert-tick-name">Certified Kubernetes Administrator</span><span class="cert-tick-org">CNCF</span><span class="cert-tick-yr">2021</span></div>
+        <div class="cert-tick-item"><div class="cert-tick-dot"></div><span class="cert-tick-name">Meta Frontend Developer</span><span class="cert-tick-org">Meta · Coursera</span><span class="cert-tick-yr">2022</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ EXPERIENCE ══ -->
+  <div id="page-experience" class="page">
+    <div class="exp-hero">
+      <div>
+        <div class="reveal sec-label">02 — Work History</div>
+        <h1 class="reveal d1">Building things<br /><span><span class="u-line" id="ul2">that matter.</span></span></h1>
+      </div>
+      <div class="exp-meta reveal d2">
+        <div class="exp-yrs"><span class="cu" data-t="6">0</span>+</div>
+        <div class="exp-yrs-label">Years of<br />Experience</div>
+      </div>
+    </div>
+
+    <div class="filters reveal">
+      <button class="fbtn active" data-f="all">All</button>
+      <button class="fbtn" data-f="backend">Backend</button>
+      <button class="fbtn" data-f="fullstack">Full Stack</button>
+      <button class="fbtn" data-f="lead">Leadership</button>
+    </div>
+
+    <div class="tl" id="tl">
+      <div class="tl-progress" id="tlp"></div>
+
+      <div class="tl-item reveal" data-tags="backend lead">
+        <div class="tl-marker"><div class="tl-dot"></div></div>
+        <div class="tl-body">
+          <div class="tl-head">
+            <div class="tl-role">Senior Software Engineer <span class="badge">Current</span></div>
+            <div class="tl-period">Jan 2022 — Present</div>
+          </div>
+          <div class="tl-company">Stripe, Inc.</div>
+          <div class="tl-loc">San Francisco, CA · Hybrid</div>
+          <div class="tl-desc">Lead engineer on the Billing infrastructure team, owning the core invoicing engine processing $2B+ in transactions monthly. Drive architectural decisions and mentor a team of 6 engineers.</div>
+          <div class="tl-wins">
+            <div class="win">Reduced invoice processing latency by 62% through async queue redesign</div>
+            <div class="win">Led migration from legacy monolith to event-driven microservices</div>
+            <div class="win">Shipped real-time revenue dashboard used by 4,000+ merchants</div>
+          </div>
+          <div class="tl-stack">
+            <span class="pill">Go</span><span class="pill">Ruby</span><span class="pill">Kafka</span><span class="pill">PostgreSQL</span><span class="pill">K8s</span><span class="pill">gRPC</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal d1" data-tags="backend fullstack">
+        <div class="tl-marker"><div class="tl-dot"></div></div>
+        <div class="tl-body">
+          <div class="tl-head">
+            <div class="tl-role">Software Engineer II</div>
+            <div class="tl-period">Mar 2020 — Dec 2021</div>
+          </div>
+          <div class="tl-company">Airbnb</div>
+          <div class="tl-loc">San Francisco, CA · Full-time</div>
+          <div class="tl-desc">Trust & Safety platform team, building fraud detection systems and real-time risk scoring pipelines protecting millions of hosts and guests.</div>
+          <div class="tl-wins">
+            <div class="win">ML pipeline serving 50M+ daily predictions at sub-10ms p99 latency</div>
+            <div class="win">Rule engine blocking $12M in fraudulent bookings in Q1</div>
+            <div class="win">Received Belong Anywhere Award for cross-team impact</div>
+          </div>
+          <div class="tl-stack">
+            <span class="pill">Python</span><span class="pill">Java</span><span class="pill">Spark</span><span class="pill">Redis</span><span class="pill">Flink</span><span class="pill">React</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal d2" data-tags="fullstack">
+        <div class="tl-marker"><div class="tl-dot"></div></div>
+        <div class="tl-body">
+          <div class="tl-head">
+            <div class="tl-role">Software Engineer</div>
+            <div class="tl-period">Jun 2018 — Feb 2020</div>
+          </div>
+          <div class="tl-company">Palantir Technologies</div>
+          <div class="tl-loc">New York, NY · Full-time</div>
+          <div class="tl-desc">Full-stack engineer on the Foundry data platform, developing tooling for large enterprise clients to manage, integrate, and operationalize data pipelines.</div>
+          <div class="tl-wins">
+            <div class="win">Pipeline orchestration UI adopted across 30+ enterprise deployments</div>
+            <div class="win">Open-sourced schema diffing library with 1.2k GitHub stars</div>
+          </div>
+          <div class="tl-stack">
+            <span class="pill">TypeScript</span><span class="pill">Java</span><span class="pill">Blueprint.js</span><span class="pill">Cassandra</span><span class="pill">Hadoop</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sk-band" style="padding-bottom:8rem;margin-bottom:0">
+      <div class="sk-block reveal d1"><div class="sk-title">Languages</div><div class="sk-items"><div class="sk-item">Go</div><div class="sk-item">Python</div><div class="sk-item">TypeScript</div><div class="sk-item">Java</div><div class="sk-item">Rust</div></div></div>
+      <div class="sk-block reveal d2"><div class="sk-title">Backend</div><div class="sk-items"><div class="sk-item">gRPC / Protobuf</div><div class="sk-item">Kafka</div><div class="sk-item">GraphQL</div><div class="sk-item">PostgreSQL</div><div class="sk-item">Redis</div></div></div>
+      <div class="sk-block reveal d3"><div class="sk-title">Infrastructure</div><div class="sk-items"><div class="sk-item">Kubernetes</div><div class="sk-item">Terraform</div><div class="sk-item">AWS / GCP</div><div class="sk-item">Docker</div><div class="sk-item">ArgoCD</div></div></div>
+      <div class="sk-block reveal d4"><div class="sk-title">Frontend</div><div class="sk-items"><div class="sk-item">React / Next.js</div><div class="sk-item">Vue 3</div><div class="sk-item">CSS / Tailwind</div><div class="sk-item">Framer Motion</div><div class="sk-item">D3.js</div></div></div>
+    </div>
+  </div>
+
+<script>
+/* ── LOADER ── */
+const ltext = "Alex Chen.";
+const lw = document.getElementById('lword');
+[...ltext].forEach((c,i)=>{const s=document.createElement('span');s.textContent=c===' '?'\u00a0':c;s.style.animationDelay=(i*50)+'ms';lw.appendChild(s);});
+const afterLoad=()=>{
+  document.getElementById('loader').classList.add('out');
+  document.getElementById('nav').classList.add('show');
+  runReveals(); runCounters(); runRings();
+};
+setTimeout(afterLoad, ltext.length*50+650);
+
+/* ── CURSOR ── */
+const dot=document.getElementById('cursor-dot'), ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function tick(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;dot.style.cssText=`left:${mx}px;top:${my}px`;ring.style.cssText=`left:${rx}px;top:${ry}px`;requestAnimationFrame(tick);})();
+document.querySelectorAll('a,button,.edu-acc-trigger,.ring-item,.cert-tick-item,.sk-block,.pill,.edu-acc-tag,.fbtn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cur-hover'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cur-hover'));
+});
+
+/* ── SCROLL BAR ── */
+window.addEventListener('scroll',()=>{
+  const pct=window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
+  document.getElementById('scroll-bar').style.width=pct+'%';
+});
+
+/* ── PAGE SWITCH ── */
+const curtain=document.getElementById('curtain');
+document.querySelectorAll('.nl').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const pg=a.dataset.pg;
+    const cur=document.querySelector('.page.visible');
+    if(document.getElementById('page-'+pg)===cur)return;
+    curtain.style.transition='transform .35s cubic-bezier(.7,0,.3,1)';
+    curtain.style.transformOrigin='left';
+    curtain.style.transform='scaleX(1)';
+    setTimeout(()=>{
+      cur.classList.remove('visible');
+      // close any open accordions
+      document.querySelectorAll('.edu-acc-item.open').forEach(i=>i.classList.remove('open'));
+      const nxt=document.getElementById('page-'+pg);
+      nxt.classList.add('visible');
+      window.scrollTo(0,0);
+      curtain.style.transformOrigin='right';
+      curtain.style.transition='transform .4s cubic-bezier(.7,0,.3,1)';
+      curtain.style.transform='scaleX(0)';
+      document.querySelectorAll('.nl').forEach(x=>x.classList.remove('active'));
+      a.classList.add('active');
+      nxt.querySelectorAll('.reveal').forEach(r=>{r.classList.remove('show');void r.offsetWidth;});
+      nxt.querySelectorAll('.ring-item').forEach(r=>r.classList.remove('go'));
+      setTimeout(()=>{runReveals();runCounters();runRings();drawTimeline();},80);
+    },340);
+  });
+});
+
+/* ── REVEAL ── */
+function runReveals(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');obs.unobserve(e.target);}});
+  },{threshold:.08});
+  document.querySelectorAll('.page.visible .reveal').forEach(el=>obs.observe(el));
+}
+
+/* ── COUNT UP ── */
+function runCounters(){
+  document.querySelectorAll('.page.visible .cu').forEach(el=>{
+    const t=+el.dataset.t; let c=0;
+    const step=t/28;
+    const iv=setInterval(()=>{c=Math.min(c+step,t);el.textContent=Math.round(c);if(c>=t)clearInterval(iv);},38);
+  });
+}
+
+/* ── SKILL RINGS ── */
+function runRings(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('go');obs.unobserve(e.target);}});
+  },{threshold:.3});
+  document.querySelectorAll('.page.visible .ring-item').forEach(r=>obs.observe(r));
+}
+
+/* ── ACCORDION ── */
+function toggleAcc(idx){
+  const item=document.getElementById('acc'+idx);
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.edu-acc-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+
+/* ── TIMELINE LINE ── */
+function drawTimeline(){
+  const tlp=document.getElementById('tlp');
+  if(!tlp)return;
+  tlp.classList.remove('drawn');
+  void tlp.offsetWidth;
+  setTimeout(()=>tlp.classList.add('drawn'),250);
+}
+setTimeout(drawTimeline,800);
+
+/* ── FILTER BUTTONS ── */
+document.querySelectorAll('.fbtn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.f;
+    document.querySelectorAll('.tl-item').forEach(item=>{
+      const tags=item.dataset.tags||'';
+      item.classList.toggle('dimmed', f!=='all' && !tags.includes(f));
+    });
+  });
+});
+</script>
+</body>
+</html>

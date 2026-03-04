@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80" fill="none">
+  <rect width="120" height="80" rx="8" fill="#E27200"/>
+  <text x="60" y="38" text-anchor="middle" fill="white" font-family="system-ui,sans-serif" font-size="14" font-weight="bold">University of</text>
+  <text x="60" y="56" text-anchor="middle" fill="white" font-family="system-ui,sans-serif" font-size="14" font-weight="bold">Mumbai</text>
+</svg>
