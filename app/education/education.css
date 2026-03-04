@@ -543,3 +543,146 @@
   color: var(--portfolio-blue);
   margin-left: 0.5rem;
 }
+
+/* Education page: hide + on all viewport sizes */
+.education-page .edu-acc-arrow {
+  display: none !important;
+}
+.education-page .edu-acc-trigger {
+  grid-template-columns: auto 1fr auto;
+}
+
+/* Education page: when dropdown open, swap font colors (black ↔ white) */
+.education-page .edu-acc-item.open .edu-acc-title {
+  color: #fff;
+}
+.education-page .edu-acc-item.open .edu-acc-trigger {
+  background: #000;
+}
+.education-page .edu-acc-item.open .edu-acc-school-sm,
+.education-page .edu-acc-item.open .edu-acc-year,
+.education-page .edu-acc-item.open .edu-acc-idx {
+  color: rgba(255, 255, 255, 0.85);
+}
+.education-page .edu-acc-item.open .edu-acc-body {
+  background: #000;
+  color: #fff;
+}
+.education-page .edu-acc-item.open .edu-acc-desc,
+.education-page .edu-acc-item.open .edu-acc-tag,
+.education-page .edu-acc-item.open .edu-acc-hl {
+  color: #fff;
+}
+.education-page .edu-acc-item.open .edu-acc-tag {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+.education-page .edu-acc-item.open .edu-acc-hl {
+  background: rgba(255, 255, 255, 0.1);
+}
+.education-page .edu-acc-item.open .edu-acc-hl-icon {
+  color: #fff;
+}
+.dark .education-page .edu-acc-item.open .edu-acc-title {
+  color: #000;
+}
+.dark .education-page .edu-acc-item.open .edu-acc-trigger {
+  background: #fff;
+}
+.dark .education-page .edu-acc-item.open .edu-acc-school-sm,
+.dark .education-page .edu-acc-item.open .edu-acc-year,
+.dark .education-page .edu-acc-item.open .edu-acc-idx {
+  color: rgba(0, 0, 0, 0.75);
+}
+.dark .education-page .edu-acc-item.open .edu-acc-body {
+  background: #fff;
+  color: #000;
+}
+.dark .education-page .edu-acc-item.open .edu-acc-desc,
+.dark .education-page .edu-acc-item.open .edu-acc-tag,
+.dark .education-page .edu-acc-item.open .edu-acc-hl {
+  color: #000;
+}
+.dark .education-page .edu-acc-item.open .edu-acc-tag {
+  border-color: rgba(0, 0, 0, 0.25);
+}
+.dark .education-page .edu-acc-item.open .edu-acc-hl {
+  background: rgba(0, 0, 0, 0.08);
+}
+.dark .education-page .edu-acc-item.open .edu-acc-hl-icon {
+  color: #000;
+}
+
+/* Education page only: no animations, constant layout on mobile/responsive */
+@media (max-width: 1024px) {
+  .education-page .edu-acc-arrow,
+  .education-home-section .edu-acc-arrow {
+    display: none !important;
+  }
+  .education-page .edu-acc-item .edu-acc-body,
+  .education-home-section .edu-acc-item .edu-acc-body {
+    max-height: none !important;
+    overflow: visible !important;
+    transition: none !important;
+  }
+  .education-page .edu-acc-trigger,
+  .education-home-section .edu-acc-trigger {
+    pointer-events: none;
+    cursor: default;
+    grid-template-columns: auto 1fr auto;
+  }
+}
+@media (max-width: 899px) {
+  .education-page .sr-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .education-page .cert-ticker {
+    animation: none;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .education-page .cert-ticker:hover {
+    animation-play-state: unset;
+  }
+  .education-page .ring-fg {
+    transition: none;
+  }
+  .education-page .ring-item .ring-fg {
+    stroke-dashoffset: var(--offset, 0);
+  }
+  .education-page .edu-acc-trigger:hover .edu-acc-title {
+    color: inherit;
+  }
+  .education-page .edu-acc-item.open .edu-acc-arrow {
+    transform: none;
+  }
+  .education-page .edu-acc-tag {
+    pointer-events: none;
+  }
+  .education-page .edu-acc-tag:hover {
+    transform: none;
+    border-color: inherit;
+    color: inherit;
+    background: transparent;
+  }
+  .dark .education-page .edu-acc-tag:hover {
+    background: transparent;
+  }
+  .education-page .edu-acc-hl {
+    pointer-events: none;
+  }
+  .education-page .edu-acc-hl:hover {
+    transform: none;
+    background: inherit;
+  }
+  .dark .education-page .edu-acc-hl:hover {
+    background: inherit;
+  }
+  .education-page .cert-tick-item:hover {
+    background: inherit;
+  }
+  .dark .education-page .cert-tick-item:hover {
+    background: inherit;
+  }
+}

@@ -4,7 +4,8 @@ import { profile } from "@/data/resume";
 import { supabase } from "@/lib/supabaseClient";
 import { Buffer } from "node:buffer";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 // Simple email regex (RFC-style)
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -74,7 +75,7 @@ export async function POST(request: Request) {
           )
         : undefined;
 
-    if (!process.env.RESEND_API_KEY) {
+    if (!resend) {
       console.error("RESEND_API_KEY is not set.");
       return NextResponse.json(
         { error: "Contact form is not configured. Please try again later." },

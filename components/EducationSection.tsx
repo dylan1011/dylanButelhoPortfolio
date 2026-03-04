@@ -16,16 +16,35 @@ const RINGS = SKILL_CARDS.map((card) => {
   };
 }).sort((a, b) => Number(b.pct) - Number(a.pct));
 
-export default function EducationSection() {
+const MOBILE_BREAK = 899;
+
+type EducationSectionProps = { constantOnMobile?: boolean };
+
+export default function EducationSection({ constantOnMobile = false }: EducationSectionProps) {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const ringsRef = useRef<HTMLDivElement>(null);
   const ringsScrollRef = useRef<HTMLDivElement>(null);
   const [ringsVisible, setRingsVisible] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
+  const constantMobile = constantOnMobile && isMobile;
+
+  useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAK}px)`);
+    const update = () => setIsMobile(mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, []);
+
   useEffect(() => {
     if (!ringsRef.current) return;
+    if (constantMobile) {
+      setRingsVisible(true);
+      return;
+    }
     const obs = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) setRingsVisible(true);
@@ -34,7 +53,7 @@ export default function EducationSection() {
     );
     obs.observe(ringsRef.current);
     return () => obs.disconnect();
-  }, []);
+  }, [constantMobile]);
 
   useEffect(() => {
     const el = ringsScrollRef.current;
@@ -95,11 +114,11 @@ export default function EducationSection() {
 
       <div className="edu-accordion">
         {education.map((item, idx) => {
-          const isOpen = openIdx === idx;
           const tags = item.coursework
             ? item.coursework.split(",").slice(0, 5).map((s) => s.trim())
             : ["Software", "Systems", "Development"];
           const highlights = "highlights" in item && Array.isArray(item.highlights) ? item.highlights : [];
+          const isOpen = openIdx === idx;
           return (
             <div
               key={item.degree}
@@ -144,9 +163,7 @@ export default function EducationSection() {
                       </div>
                       <div className="edu-acc-tags">
                         {tags.map((tag) => (
-                          <span key={tag} className="edu-acc-tag">
-                            {tag}
-                          </span>
+                          <span key={tag} className="edu-acc-tag">{tag}</span>
                         ))}
                       </div>
                     </div>
