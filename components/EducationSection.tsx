@@ -5,6 +5,8 @@ import { useState, useEffect, useRef } from "react";
 import { education, certifications, coreProficiencyPct } from "@/data/resume";
 import { SKILL_CARDS } from "@/data/skillCards";
 
+const MOBILE_BREAKPOINT = 900;
+
 /* Core Proficiencies use same headings as My Tech Stack; % from resume; ordered by % descending; bar = skill card color (b/r/g) */
 const RINGS = SKILL_CARDS.map((card) => {
   const pct = coreProficiencyPct[card.title] ?? 85;
@@ -18,6 +20,7 @@ const RINGS = SKILL_CARDS.map((card) => {
 
 export default function EducationSection() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const ringsRef = useRef<HTMLDivElement>(null);
   const ringsScrollRef = useRef<HTMLDivElement>(null);
   const [ringsVisible, setRingsVisible] = useState(false);
@@ -25,7 +28,20 @@ export default function EducationSection() {
   const [canScrollRight, setCanScrollRight] = useState(false);
 
   useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+    const set = () => {
+      const mobile = mq.matches;
+      setIsMobile(mobile);
+      if (mobile) setRingsVisible(true);
+    };
+    set();
+    mq.addEventListener("change", set);
+    return () => mq.removeEventListener("change", set);
+  }, []);
+
+  useEffect(() => {
     if (!ringsRef.current) return;
+    if (isMobile) return;
     const obs = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) setRingsVisible(true);
@@ -34,7 +50,7 @@ export default function EducationSection() {
     );
     obs.observe(ringsRef.current);
     return () => obs.disconnect();
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     const el = ringsScrollRef.current;
@@ -61,7 +77,7 @@ export default function EducationSection() {
 
   return (
     <>
-      <div className="edu-banner sr-reveal">
+      <div className={`edu-banner ${isMobile ? "" : "sr-reveal"}`}>
         <div className="edu-banner-left">
           <div className="edu-banner-label">Academic Background</div>
           <h1 className="edu-banner-h1">
@@ -93,9 +109,9 @@ export default function EducationSection() {
         </div>
       </div>
 
-      <div className="edu-accordion">
+      <div className={`edu-accordion ${isMobile ? "edu-mobile-constant" : ""}`}>
         {education.map((item, idx) => {
-          const isOpen = openIdx === idx;
+          const isOpen = isMobile ? true : openIdx === idx;
           const tags = item.coursework
             ? item.coursework.split(",").slice(0, 5).map((s) => s.trim())
             : ["Software", "Systems", "Development"];
@@ -103,14 +119,16 @@ export default function EducationSection() {
           return (
             <div
               key={item.degree}
-              className={`edu-acc-item sr-reveal ${isOpen ? "open" : ""}`}
-              data-sr-delay={idx * 60}
+              className={`edu-acc-item ${isMobile ? "" : "sr-reveal"} ${isOpen ? "open" : ""}`}
+              data-sr-delay={isMobile ? undefined : idx * 60}
             >
               <button
                 type="button"
                 className="edu-acc-trigger"
-                onClick={() => setOpenIdx(isOpen ? null : idx)}
+                onClick={() => !isMobile && setOpenIdx(isOpen ? null : idx)}
                 aria-expanded={isOpen}
+                tabIndex={isMobile ? -1 : 0}
+                aria-hidden={isMobile}
               >
                 <span className="edu-acc-idx">{String(idx + 1).padStart(2, "0")}</span>
                 <span>
@@ -127,12 +145,12 @@ export default function EducationSection() {
                     ? {
                         maxHeight: "1200px",
                         overflow: "visible",
-                        transition: "max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
+                        transition: isMobile ? "none" : "max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
                       }
                     : {
                         maxHeight: "0",
                         overflow: "hidden",
-                        transition: "max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
+                        transition: isMobile ? "none" : "max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
                       }
                 }
               >
@@ -168,16 +186,16 @@ export default function EducationSection() {
         })}
       </div>
 
-      <div className="edu-rings-wrap sr-reveal" ref={ringsRef} data-sr-delay="80">
+      <div className={`edu-rings-wrap ${isMobile ? "" : "sr-reveal"}`} ref={ringsRef} data-sr-delay={isMobile ? undefined : "80"}>
         <div className="edu-rings-head">
           <div className="edu-rings-title">// Core Proficiencies</div>
         </div>
-        <div className="edu-rings-scroller">
+        <div className={`edu-rings-scroller ${isMobile ? "edu-mobile-constant" : ""}`}>
           <div className="edu-rings" ref={ringsScrollRef}>
           {RINGS.map((r) => (
             <div
               key={r.label}
-              className={`ring-item ${ringsVisible ? "go" : ""}`}
+              className={`ring-item ${ringsVisible ? "go" : ""} ${isMobile ? "ring-no-anim" : ""}`}
               style={{ ["--offset" as string]: `${r.offset}` }}
             >
               <svg className="ring-svg" viewBox="0 0 80 80" aria-hidden>
@@ -220,7 +238,7 @@ export default function EducationSection() {
         </div>
       </div>
 
-      <div className="cert-ticker-wrap" style={{ marginTop: "5rem", paddingBottom: "8rem" }}>
+      <div className={`cert-ticker-wrap ${isMobile ? "edu-mobile-constant" : ""}`} style={{ marginTop: "5rem", paddingBottom: "8rem" }}>
         <div className="cert-ticker-label">
           // Certifications &amp; Credentials — hover to pause
         </div>

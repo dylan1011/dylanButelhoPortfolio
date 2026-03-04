@@ -118,7 +118,11 @@ export default function SkillBlockIcon({ name, size = 28, className = "", color 
   return (
     <span
       className={`skill-block-icon inline-flex items-center justify-center flex-shrink-0 ${className}`}
-      style={{ width: size, height: size, color }}
+      style={{
+        width: size,
+        height: size,
+        color: color ?? "currentColor",
+      }}
       aria-hidden
     >
       {icon}

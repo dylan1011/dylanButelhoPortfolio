@@ -2,6 +2,14 @@
  * My Tech Stack cards — shared between home page and skills page.
  * Same titles, descriptions, tags, and bar colors.
  */
+
+/** Explicit hex for icon color so icons stay visible on mobile/responsive (no CSS variable resolution issues). */
+export const SKILL_CARD_ICON_COLORS: Record<"b" | "r" | "g", string> = {
+  b: "#0057FF",
+  r: "#FF1F1F",
+  g: "#00C853",
+} as const;
+
 export const SKILL_CARDS = [
   {
     title: "Cloud",

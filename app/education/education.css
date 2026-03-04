@@ -1,5 +1,46 @@
 /* Education page — accordion, rings, cert ticker */
 
+/* Mobile/responsive: constant layout, no animations */
+@media (max-width: 899px) {
+  .edu-mobile-constant.edu-accordion .edu-acc-body,
+  .edu-accordion.edu-mobile-constant .edu-acc-item .edu-acc-body {
+    max-height: none;
+    overflow: visible;
+    transition: none;
+  }
+  .edu-mobile-constant.edu-accordion .edu-acc-trigger {
+    cursor: default;
+    pointer-events: none;
+  }
+  .edu-mobile-constant.edu-accordion .edu-acc-arrow {
+    display: none;
+  }
+  .edu-mobile-constant.edu-accordion .edu-acc-item.open .edu-acc-arrow {
+    transform: none;
+  }
+  .edu-mobile-constant.edu-rings-scroller .ring-item .ring-fg {
+    transition: none;
+  }
+  .edu-mobile-constant.edu-rings-scroller .ring-item.go .ring-fg {
+    stroke-dashoffset: var(--offset, 0);
+  }
+  .edu-mobile-constant.cert-ticker-wrap .cert-ticker {
+    animation: none;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .edu-mobile-constant.cert-ticker-wrap .cert-ticker::-webkit-scrollbar {
+    display: none;
+  }
+}
+.ring-no-anim.ring-item .ring-fg {
+  transition: none;
+}
+.ring-no-anim.ring-item.go .ring-fg {
+  stroke-dashoffset: var(--offset, 0);
+}
+
 .edu-accordion {
   padding: 0 1.5rem;
   max-width: 1400px;

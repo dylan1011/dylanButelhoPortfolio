@@ -5,7 +5,7 @@ import {
   homeSkillHighlights,
   academicProjects,
 } from "@/data/resume";
-import { SKILL_CARDS } from "@/data/skillCards";
+import { SKILL_CARDS, SKILL_CARD_ICON_COLORS } from "@/data/skillCards";
 import { SKILL_BRAND_COLORS } from "@/data/skillColors";
 import { SKILL_LOGO_OVERRIDES, SKILL_LOGO_BLEND_LIGHTEN_SLUGS } from "@/data/skillLogoOverrides";
 import SkillIcon from "@/components/SkillIcon";
@@ -201,13 +201,7 @@ export default function Home() {
                   name={card.title}
                   size={32}
                   className="block mb-4"
-                  color={
-                    card.bar === "b"
-                      ? "var(--portfolio-blue)"
-                      : card.bar === "r"
-                        ? "var(--portfolio-red)"
-                        : "var(--portfolio-green)"
-                  }
+                  color={SKILL_CARD_ICON_COLORS[card.bar]}
                 />
                 <h3 className="skill-name">{card.title}</h3>
                 <p className="skill-desc">{card.description}</p>
