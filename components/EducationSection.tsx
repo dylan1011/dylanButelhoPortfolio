@@ -2,10 +2,12 @@
 
 import "@/app/education/education.css";
 import { useState, useEffect, useRef } from "react";
-import { education, certifications, coreProficiencyPct } from "@/data/resume";
+import {
+  education as defaultEducation,
+  certifications as defaultCertifications,
+  coreProficiencyPct,
+} from "@/data/resume";
 import { SKILL_CARDS } from "@/data/skillCards";
-
-const MOBILE_BREAKPOINT = 900;
 
 /* Core Proficiencies use same headings as My Tech Stack; % from resume; ordered by % descending; bar = skill card color (b/r/g) */
 const RINGS = SKILL_CARDS.map((card) => {
@@ -18,8 +20,22 @@ const RINGS = SKILL_CARDS.map((card) => {
   };
 }).sort((a, b) => Number(b.pct) - Number(a.pct));
 
-export default function EducationSection() {
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
+const MOBILE_BREAK = 899;
+
+type EducationItem = typeof defaultEducation[number];
+type CertificationItem = typeof defaultCertifications[number];
+
+type EducationSectionProps = {
+  constantOnMobile?: boolean;
+  educationItems?: EducationItem[];
+  certificationItems?: CertificationItem[];
+};
+
+export default function EducationSection({
+  constantOnMobile = false,
+  educationItems = defaultEducation,
+  certificationItems = defaultCertifications,
+}: EducationSectionProps) {
   const [isMobile, setIsMobile] = useState(false);
   const ringsRef = useRef<HTMLDivElement>(null);
   const ringsScrollRef = useRef<HTMLDivElement>(null);
@@ -27,21 +43,22 @@ export default function EducationSection() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
+  const constantMobile = constantOnMobile && isMobile;
+
   useEffect(() => {
-    const mq = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
-    const set = () => {
-      const mobile = mq.matches;
-      setIsMobile(mobile);
-      if (mobile) setRingsVisible(true);
-    };
-    set();
-    mq.addEventListener("change", set);
-    return () => mq.removeEventListener("change", set);
+    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAK}px)`);
+    const update = () => setIsMobile(mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
   }, []);
 
   useEffect(() => {
     if (!ringsRef.current) return;
-    if (isMobile) return;
+    if (constantMobile) {
+      setRingsVisible(true);
+      return;
+    }
     const obs = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) setRingsVisible(true);
@@ -50,7 +67,7 @@ export default function EducationSection() {
     );
     obs.observe(ringsRef.current);
     return () => obs.disconnect();
-  }, [isMobile]);
+  }, [constantMobile]);
 
   useEffect(() => {
     const el = ringsScrollRef.current;
@@ -72,12 +89,12 @@ export default function EducationSection() {
     };
   }, []);
 
-  const degreesCount = education.length;
+  const degreesCount = educationItems.length;
   const yearsBuilding = new Date().getFullYear() - 2019;
 
   return (
     <>
-      <div className={`edu-banner ${isMobile ? "" : "sr-reveal"}`}>
+      <div className="edu-banner sr-reveal">
         <div className="edu-banner-left">
           <div className="edu-banner-label">Academic Background</div>
           <h1 className="edu-banner-h1">
@@ -86,7 +103,7 @@ export default function EducationSection() {
             of <em>craft.</em>
           </h1>
           <p className="edu-banner-sub">
-            {degreesCount} degree{degreesCount !== 1 ? "s" : ""}. {certifications.length} certification{certifications.length !== 1 ? "s" : ""}. Continuous learning that never really stopped.
+            {degreesCount} degree{degreesCount !== 1 ? "s" : ""}. {certificationItems.length} certification{certificationItems.length !== 1 ? "s" : ""}. Continuous learning that never really stopped.
           </p>
         </div>
         <div className="edu-banner-right">
@@ -95,7 +112,7 @@ export default function EducationSection() {
             <div className="edu-stat-l">Degrees</div>
           </div>
           <div className="edu-stat-block">
-            <div className="edu-stat-n">{certifications.length}</div>
+            <div className="edu-stat-n">{certificationItems.length}</div>
             <div className="edu-stat-l">Certifications</div>
           </div>
           <div className="edu-stat-block">
@@ -109,9 +126,8 @@ export default function EducationSection() {
         </div>
       </div>
 
-      <div className={`edu-accordion ${isMobile ? "edu-mobile-constant" : ""}`}>
-        {education.map((item, idx) => {
-          const isOpen = isMobile ? true : openIdx === idx;
+      <div className="edu-accordion">
+        {educationItems.map((item, idx) => {
           const tags = item.coursework
             ? item.coursework.split(",").slice(0, 5).map((s) => s.trim())
             : ["Software", "Systems", "Development"];
@@ -119,16 +135,11 @@ export default function EducationSection() {
           return (
             <div
               key={item.degree}
-              className={`edu-acc-item ${isMobile ? "" : "sr-reveal"} ${isOpen ? "open" : ""}`}
-              data-sr-delay={isMobile ? undefined : idx * 60}
+              className="edu-acc-item sr-reveal"
+              data-sr-delay={idx * 60}
             >
-              <button
-                type="button"
+              <div
                 className="edu-acc-trigger"
-                onClick={() => !isMobile && setOpenIdx(isOpen ? null : idx)}
-                aria-expanded={isOpen}
-                tabIndex={isMobile ? -1 : 0}
-                aria-hidden={isMobile}
               >
                 <span className="edu-acc-idx">{String(idx + 1).padStart(2, "0")}</span>
                 <span>
@@ -136,24 +147,8 @@ export default function EducationSection() {
                   <div className="edu-acc-school-sm">{item.school}</div>
                 </span>
                 <span className="edu-acc-year">{item.period}{item.location ? ` · ${item.location}` : ""}</span>
-                <span className="edu-acc-arrow">+</span>
-              </button>
-              <div
-                className="edu-acc-body"
-                style={
-                  isOpen
-                    ? {
-                        maxHeight: "1200px",
-                        overflow: "visible",
-                        transition: isMobile ? "none" : "max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
-                      }
-                    : {
-                        maxHeight: "0",
-                        overflow: "hidden",
-                        transition: isMobile ? "none" : "max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
-                      }
-                }
-              >
+              </div>
+              <div className="edu-acc-body">
                 <div className="edu-acc-inner">
                   <div className="edu-acc-content">
                     <div className="edu-acc-left">
@@ -162,9 +157,7 @@ export default function EducationSection() {
                       </div>
                       <div className="edu-acc-tags">
                         {tags.map((tag) => (
-                          <span key={tag} className="edu-acc-tag">
-                            {tag}
-                          </span>
+                          <span key={tag} className="edu-acc-tag">{tag}</span>
                         ))}
                       </div>
                     </div>
@@ -186,16 +179,16 @@ export default function EducationSection() {
         })}
       </div>
 
-      <div className={`edu-rings-wrap ${isMobile ? "" : "sr-reveal"}`} ref={ringsRef} data-sr-delay={isMobile ? undefined : "80"}>
+      <div className="edu-rings-wrap sr-reveal" ref={ringsRef} data-sr-delay="80">
         <div className="edu-rings-head">
           <div className="edu-rings-title">// Core Proficiencies</div>
         </div>
-        <div className={`edu-rings-scroller ${isMobile ? "edu-mobile-constant" : ""}`}>
+        <div className="edu-rings-scroller">
           <div className="edu-rings" ref={ringsScrollRef}>
           {RINGS.map((r) => (
             <div
               key={r.label}
-              className={`ring-item ${ringsVisible ? "go" : ""} ${isMobile ? "ring-no-anim" : ""}`}
+              className={`ring-item ${ringsVisible ? "go" : ""}`}
               style={{ ["--offset" as string]: `${r.offset}` }}
             >
               <svg className="ring-svg" viewBox="0 0 80 80" aria-hidden>
@@ -238,13 +231,13 @@ export default function EducationSection() {
         </div>
       </div>
 
-      <div className={`cert-ticker-wrap ${isMobile ? "edu-mobile-constant" : ""}`} style={{ marginTop: "5rem", paddingBottom: "8rem" }}>
+      <div className="cert-ticker-wrap" style={{ marginTop: "5rem", paddingBottom: "8rem" }}>
         <div className="cert-ticker-label">
           // Certifications &amp; Credentials — hover to pause
         </div>
-        {certifications.length > 0 ? (
+        {certificationItems.length > 0 ? (
           <div className="cert-ticker">
-            {[...certifications, ...certifications, ...certifications, ...certifications].map((c, i) => (
+            {[...certificationItems, ...certificationItems, ...certificationItems, ...certificationItems].map((c, i) => (
               <div key={`${c.name}-${i}`} className="cert-tick-item">
                 <div className="cert-tick-dot" />
                 <span className="cert-tick-name">{c.name}</span>

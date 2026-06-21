@@ -30,7 +30,7 @@ export default function ProjectsPage() {
               </h2>
               <p className="proj-desc">{project.description}</p>
               <div className="proj-tech flex flex-wrap gap-2 mb-7">
-                {project.tags.slice(0, 4).map((tag, i) => {
+                {project.tags.map((tag, i) => {
                   const isDark = i % 4 === 2;
                   return (
                     <span

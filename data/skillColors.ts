@@ -22,6 +22,7 @@ export const SKILL_BRAND_COLORS: Record<string, string> = {
   pandas: "#150458",
   numpy: "#013243",
   scikitlearn: "#F89939",
+  matplotlib: "#11557C",
   pytorch: "#EE4C2C",
   tensorflow: "#FF6F00",
   mysql: "#4479A1",

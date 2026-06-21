@@ -14,7 +14,7 @@ const navLinks = [
   { href: "/projects", label: "Projects", icon: FolderIcon },
   { href: "/blog", label: "Blog", icon: DocumentTextIcon },
   { href: "/contact", label: "Contact", icon: MailIcon },
-  { href: "/site-settings", label: "Site Settings", icon: CogIcon },
+  { href: "/site-settings", label: "Site settings", icon: CogIcon },
 ];
 
 function HomeIcon({ className }: { className?: string }) {
@@ -92,7 +92,7 @@ export default function Navbar() {
       <header className="navbar-apple-font fixed top-0 left-0 right-0 z-[100] flex items-center justify-between min-h-[var(--navbar-height)] h-[var(--navbar-height)] py-0 px-4 sm:px-6 lg:px-12 border-b border-black/[0.04] dark:border-white/[0.04] bg-white/70 dark:bg-[#05070b]/75 backdrop-blur-[14px] transition-colors">
         <Link
           href="/"
-          className="navbar-brand font-extrabold text-[1.05rem] tracking-[0.14em] text-[var(--portfolio-black)] dark:text-[var(--portfolio-white)] no-underline"
+          className="navbar-brand text-[1.05rem] text-[var(--portfolio-black)] dark:text-[var(--portfolio-white)] no-underline"
         >
           Dylan Butelho
         </Link>
@@ -115,7 +115,7 @@ export default function Navbar() {
                   >
                     <Icon className="nav-icon w-5 h-5 shrink-0" aria-hidden />
                     {/* Hover tooltip: webpage title (below icon so it's not cut off) */}
-                    <span className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 px-2.5 py-1 rounded text-xs font-apple font-bold tracking-wider uppercase whitespace-nowrap bg-[var(--portfolio-black)] dark:bg-[var(--portfolio-white)] text-[var(--portfolio-white)] dark:text-[var(--portfolio-black)] opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-150 shadow-md z-10">
+                    <span className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 px-2.5 py-1 rounded text-[0.8125rem] font-apple font-semibold tracking-normal whitespace-nowrap bg-[var(--portfolio-black)] dark:bg-[var(--portfolio-white)] text-[var(--portfolio-white)] dark:text-[var(--portfolio-black)] opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-150 shadow-md z-10">
                       {label}
                     </span>
                   </Link>
@@ -128,9 +128,9 @@ export default function Navbar() {
           </div>
           <Link
             href="/contact"
-            className="font-apple text-[0.72rem] font-bold tracking-[0.1em] uppercase text-white bg-[var(--portfolio-blue)] py-2.5 px-[22px] no-underline transition-all hover:bg-[var(--portfolio-black)] dark:hover:bg-[var(--portfolio-white)] dark:hover:text-[var(--portfolio-black)] hover:-translate-y-px"
+            className="font-apple text-[0.8125rem] font-semibold tracking-normal text-white bg-[var(--portfolio-blue)] py-2.5 px-[22px] no-underline transition-all hover:bg-[var(--portfolio-black)] dark:hover:bg-[var(--portfolio-white)] dark:hover:text-[var(--portfolio-black)] hover:-translate-y-px"
           >
-            Contact Me
+            Contact me
           </Link>
         </div>
 
@@ -140,12 +140,12 @@ export default function Navbar() {
           aria-controls="mobile-nav"
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((o) => !o)}
-          className="nav-burger lg:hidden p-3 -m-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 touch-manipulation"
+          className="nav-burger lg:hidden p-3 -m-2 rounded-lg text-[var(--portfolio-black)] dark:text-[var(--portfolio-white)] hover:bg-black/5 dark:hover:bg-white/10 touch-manipulation"
         >
           <svg className="nav-burger-icon w-6 h-6" fill="none" viewBox="0 0 24 24">
             {mobileOpen ? (
               <path
-                className="burger-line burger-line-open stroke-[var(--portfolio-black)] dark:stroke-[var(--portfolio-white)]"
+                className="burger-line burger-line-open stroke-current"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2.2}
@@ -154,19 +154,19 @@ export default function Navbar() {
             ) : (
               <>
                 <path
-                  className="burger-line burger-line-1 stroke-[var(--portfolio-blue)]"
+                  className="burger-line burger-line-1 stroke-current"
                   strokeLinecap="round"
                   strokeWidth={2.2}
                   d="M4 6h16"
                 />
                 <path
-                  className="burger-line burger-line-2 stroke-[var(--portfolio-red)]"
+                  className="burger-line burger-line-2 stroke-current"
                   strokeLinecap="round"
                   strokeWidth={2.2}
                   d="M4 12h16"
                 />
                 <path
-                  className="burger-line burger-line-3 stroke-[var(--portfolio-black)] dark:stroke-[var(--portfolio-white)]"
+                  className="burger-line burger-line-3 stroke-current"
                   strokeLinecap="round"
                   strokeWidth={2.2}
                   d="M4 18h16"
@@ -183,7 +183,7 @@ export default function Navbar() {
           className="lg:hidden fixed z-[110] top-[var(--navbar-height)] left-0 right-0 bottom-0 overflow-y-auto border-t border-black/10 dark:border-white/10 bg-white/85 dark:bg-[#0a0a0a]/85 backdrop-blur-md shadow-lg"
         >
           <div className="px-4 py-3 flex items-center justify-between border-b border-black/10 dark:border-white/10 bg-white/70 dark:bg-[#0a0a0a]/70 backdrop-blur-md">
-            <span className="font-apple text-xs font-bold text-[var(--portfolio-black)] dark:text-[var(--portfolio-white)]">Theme</span>
+            <span className="font-apple text-xs font-semibold text-[var(--portfolio-black)] dark:text-[var(--portfolio-white)]">Theme</span>
             <ThemeToggle compact />
           </div>
           <ul className="px-3 py-3 flex flex-col gap-0.5 list-none">
@@ -194,7 +194,7 @@ export default function Navbar() {
                   <Link
                     href={href}
                     onClick={() => setMobileOpen(false)}
-                    className={`flex items-center gap-3 py-3 px-4 rounded-lg font-apple text-sm font-bold uppercase ${
+                    className={`flex items-center gap-3 py-3 px-4 rounded-lg font-apple text-sm font-semibold tracking-normal ${
                       isActive
                         ? "text-[var(--portfolio-red)] bg-[var(--portfolio-blue)]/10 dark:bg-[var(--portfolio-blue)]/20"
                         : "text-[var(--portfolio-black)] dark:text-[var(--portfolio-white)] hover:text-[var(--portfolio-blue)] dark:hover:text-[var(--portfolio-blue)] hover:bg-black/5 dark:hover:bg-white/10"
@@ -210,9 +210,9 @@ export default function Navbar() {
               <Link
                 href="/contact"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center font-apple text-[0.72rem] font-bold tracking-wide uppercase text-white bg-[var(--portfolio-blue)] py-3 px-4 rounded-lg w-full"
+                className="flex items-center justify-center font-apple text-[0.8125rem] font-semibold tracking-normal text-white bg-[var(--portfolio-blue)] py-3 px-4 rounded-lg w-full"
               >
-                Contact Me
+                Contact me
               </Link>
             </li>
           </ul>

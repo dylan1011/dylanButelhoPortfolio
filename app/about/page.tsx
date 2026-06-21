@@ -25,19 +25,7 @@ export default function AboutPage() {
             style={{ color: "rgba(255,255,255,0.55)", lineHeight: 1.8 }}
           >
             <p>
-              My name is <span className="text-white">{profile.shortName}</span>. I am currently pursuing a Master’s degree in Computer Science, where I am deepening my understanding of algorithms, data structures, distributed systems, databases, cloud computing, computer architecture, and intelligent systems. My approach to technology is rooted in strong fundamentals and a desire to understand how systems behave at both a micro and macro level.
-            </p>
-            <p>
-              I enjoy working on complex problems that require structured reasoning, optimization, and careful architectural thinking. Rather than focusing only on surface-level functionality, I am interested in how systems scale, how they maintain reliability under load, and how design decisions influence long-term maintainability. Performance awareness, clarity in implementation, and clean abstractions are principles that guide my work.
-            </p>
-            <p>
-              Curiosity drives my learning process. I regularly explore concepts related to system efficiency, intelligent computing, data modeling, and infrastructure design to better understand how different layers of technology integrate and operate cohesively. I believe that impactful engineering comes from combining theoretical depth with practical execution.
-            </p>
-            <p>
-              Beyond academics, sports have played a significant role in shaping my mindset. Competitive football and officiating have strengthened my discipline, composure under pressure, and decision-making ability — qualities that naturally translate into collaborative and high-responsibility environments.
-            </p>
-            <p>
-              At my core, I am committed to continuous growth and technical excellence. I aim to build systems that are thoughtfully engineered, efficient by design, and capable of operating at a high standard of reliability and performance.
+              I am a Computer Science graduate with a master&apos;s degree from Syracuse University, bringing experience in full-stack development, machine learning, and scalable systems. I am proficient in Python and JavaScript, with hands-on experience building data-driven applications on AWS. I specialize in designing efficient, well-structured systems with clean architecture and dependable execution across the full software lifecycle, from design through deployment.
             </p>
           </div>
           <div className="about-perks flex flex-col gap-5">

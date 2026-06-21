@@ -5,11 +5,10 @@ import {
   homeSkillHighlights,
   academicProjects,
 } from "@/data/resume";
-import { SKILL_CARDS, SKILL_CARD_ICON_COLORS } from "@/data/skillCards";
 import { SKILL_BRAND_COLORS } from "@/data/skillColors";
 import { SKILL_LOGO_OVERRIDES, SKILL_LOGO_BLEND_LIGHTEN_SLUGS } from "@/data/skillLogoOverrides";
 import SkillIcon from "@/components/SkillIcon";
-import SkillBlockIcon from "@/components/SkillBlockIcon";
+import SkillsSection from "@/components/SkillsSection";
 import HeroCodeBlock from "@/components/HeroCodeBlock";
 import AboutCodeBlock from "@/components/AboutCodeBlock";
 import ContactForm from "@/components/ContactForm";
@@ -49,10 +48,10 @@ export default function Home() {
               <span className="text-[var(--portfolio-black)] dark:text-[var(--portfolio-white)]">LEARN</span>
             </p>
             <p className="hero-desc">
-              I am a Computer Science graduate student with a strong foundation in algorithms, system design, and performance-oriented engineering. I focus on building efficient, scalable, and well-structured systems with clean architecture and reliable execution. I approach problems analytically, think in systems rather than isolated components, and strive to create solutions that are technically robust and practically impactful.
+              I am a Computer Science graduate with a master&apos;s degree from Syracuse University, bringing experience in full-stack development, machine learning, and scalable systems. I am proficient in Python and JavaScript, with hands-on experience building data-driven applications on AWS. I specialize in designing efficient, well-structured systems with clean architecture and dependable execution across the full software lifecycle, from design through deployment.
             </p>
             <div className="hero-actions flex flex-wrap gap-4">
-              <Link href="/projects" className="btn-primary no-underline">
+              <Link href="#projects" className="btn-primary no-underline">
                 View Projects
               </Link>
               <Link href="/contact" className="btn-outline no-underline">
@@ -173,56 +172,9 @@ export default function Home() {
 
       <div className="border-t-4 border-[var(--portfolio-blue)]" aria-hidden />
 
-      {/* Skills — exact HTML: padding 120px 48px, section-header margin 64px, skill-card 40px 36px */}
-      <section className="skills py-12 sm:py-16 lg:py-[120px] px-4 sm:px-6 lg:px-12 bg-[var(--portfolio-bg)] dark:bg-[var(--portfolio-black)] overflow-hidden">
-        <div className="w-full">
-          <div className="section-header sr-reveal flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 flex-wrap">
-            <div>
-              <p className="section-label">What I Do</p>
-              <h2 className="exp-title">
-                My <span>Tech Stack</span>
-              </h2>
-            </div>
-          </div>
-          <div className="skills-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[2px] rounded overflow-hidden bg-black/10 dark:bg-white/5">
-            {SKILL_CARDS.map((card, idx) => (
-              <div
-                key={card.title}
-                className={`sr-reveal skill-card cursor-hover relative group skill-card-${card.bar}`}
-                data-sr-delay={String(60 * (idx % 6))}
-              >
-                <div
-                  className="absolute top-0 left-0 right-0 h-0 group-hover:h-[3px] transition-all duration-400 origin-left"
-                  style={{
-                    backgroundColor: card.bar === "b" ? "var(--portfolio-blue)" : card.bar === "r" ? "var(--portfolio-red)" : "var(--portfolio-green)",
-                  }}
-                />
-                <SkillBlockIcon
-                  name={card.title}
-                  size={32}
-                  className="block mb-4"
-                  color={SKILL_CARD_ICON_COLORS[card.bar]}
-                />
-                <h3 className="skill-name">{card.title}</h3>
-                <p className="skill-desc">{card.description}</p>
-                <div className="skill-tags flex flex-wrap gap-1.5 mt-4">
-                  {card.tags.map((tag) => (
-                    <span key={tag} className="skill-tag">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex justify-center mt-10 sm:mt-12">
-            <Link href="/skills" className="sr-reveal btn-outline no-underline" data-sr-delay="120">
-              More
-            </Link>
-          </div>
-        </div>
-      </section>
+      <div id="skills" className="bg-[var(--portfolio-bg)] dark:bg-[var(--portfolio-black)]">
+        <SkillsSection />
+      </div>
 
       <div className="border-t-4 border-[var(--portfolio-red)]" aria-hidden />
 
@@ -234,7 +186,7 @@ export default function Home() {
       <div className="border-t-4 border-[var(--portfolio-blue)]" aria-hidden />
 
       {/* Projects — exact HTML: padding 60px 48px, proj-title 1.8rem, proj-desc 0.9rem max-w 380px */}
-      <section className="projects bg-[var(--portfolio-white)] dark:bg-[var(--portfolio-black)] pb-12 sm:pb-16 lg:pb-[96px] overflow-hidden">
+      <section id="projects" className="projects bg-[var(--portfolio-white)] dark:bg-[var(--portfolio-black)] pb-12 sm:pb-16 lg:pb-[96px] overflow-hidden scroll-mt-[var(--navbar-height)]">
         <div className="projects-header section-header sr-reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 pt-12 sm:pt-16 pb-10 sm:pb-16">
           <div>
             <p className="section-label">Things I&apos;ve Built</p>
@@ -244,12 +196,11 @@ export default function Home() {
           </div>
         </div>
         <div className="project-list grid grid-cols-1 sm:grid-cols-2">
-          {academicProjects.slice(0, 2).map((project, idx) => {
+          {academicProjects.map((project, idx) => {
             const bar = ["b", "r", "g"][idx % 3] as "b" | "r" | "g";
             return (
-            <Link
+            <article
               key={project.title}
-              href="/projects"
               className={`sr-reveal project-item project-item-${bar} block border-b border-r border-black/[0.08] dark:border-white/[0.08] p-6 sm:p-8 lg:p-12 sm:even:border-r-0 cursor-hover hover:bg-[var(--portfolio-gray)] dark:hover:bg-white/5 transition-colors min-w-0`}
               data-sr-delay={String(50 * (idx % 8))}
             >
@@ -260,7 +211,7 @@ export default function Home() {
               </h3>
               <p className="proj-desc">{project.description}</p>
               <div className="proj-tech flex flex-wrap gap-2 mb-7">
-                {project.tags.slice(0, 4).map((tag, i) => {
+                {project.tags.map((tag, i) => {
                   const isDark = i % 4 === 2;
                   return (
                     <span
@@ -277,15 +228,9 @@ export default function Home() {
               </div>
               <span className="proj-arrow">↗</span>
               <span className="proj-number-bg">{String(idx + 1).padStart(2, "0")}</span>
-            </Link>
+            </article>
           );
           })}
-        </div>
-
-        <div className="flex justify-center mt-10 sm:mt-12">
-          <Link href="/projects" className="sr-reveal btn-outline no-underline" data-sr-delay="120">
-            More
-          </Link>
         </div>
       </section>
 
@@ -311,19 +256,7 @@ export default function Home() {
           </h2>
           <div className="about-body text-base font-light leading-relaxed mb-12 space-y-4" style={{ color: "rgba(255,255,255,0.55)" }}>
             <p>
-              My name is <strong className="text-white font-extrabold">{profile.shortName}</strong>. I am currently pursuing a Master’s degree in Computer Science, where I am deepening my understanding of algorithms, data structures, distributed systems, databases, cloud computing, computer architecture, and intelligent systems. My approach to technology is rooted in strong fundamentals and a desire to understand how systems behave at both a micro and macro level.
-            </p>
-            <p>
-              I enjoy working on complex problems that require structured reasoning, optimization, and careful architectural thinking. Rather than focusing only on surface-level functionality, I am interested in how systems scale, how they maintain reliability under load, and how design decisions influence long-term maintainability. Performance awareness, clarity in implementation, and clean abstractions are principles that guide my work.
-            </p>
-            <p>
-              Curiosity drives my learning process. I regularly explore concepts related to system efficiency, intelligent computing, data modeling, and infrastructure design to better understand how different layers of technology integrate and operate cohesively. I believe that impactful engineering comes from combining theoretical depth with practical execution.
-            </p>
-            <p>
-              Beyond academics, sports have played a significant role in shaping my mindset. Competitive football and officiating have strengthened my discipline, composure under pressure, and decision-making ability — qualities that naturally translate into collaborative and high-responsibility environments.
-            </p>
-            <p>
-              At my core, I am committed to continuous growth and technical excellence. I aim to build systems that are thoughtfully engineered, efficient by design, and capable of operating at a high standard of reliability and performance.
+              I am a Computer Science graduate with a master&apos;s degree from Syracuse University, bringing experience in full-stack development, machine learning, and scalable systems. I am proficient in Python and JavaScript, with hands-on experience building data-driven applications on AWS. I specialize in designing efficient, well-structured systems with clean architecture and dependable execution across the full software lifecycle, from design through deployment.
             </p>
           </div>
           <div className="about-perks flex flex-col gap-5">
