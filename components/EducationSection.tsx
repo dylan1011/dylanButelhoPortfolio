@@ -2,7 +2,11 @@
 
 import "@/app/education/education.css";
 import { useState, useEffect, useRef } from "react";
-import { education, certifications, coreProficiencyPct } from "@/data/resume";
+import {
+  education as defaultEducation,
+  certifications as defaultCertifications,
+  coreProficiencyPct,
+} from "@/data/resume";
 import { SKILL_CARDS } from "@/data/skillCards";
 
 /* Core Proficiencies use same headings as My Tech Stack; % from resume; ordered by % descending; bar = skill card color (b/r/g) */
@@ -18,10 +22,20 @@ const RINGS = SKILL_CARDS.map((card) => {
 
 const MOBILE_BREAK = 899;
 
-type EducationSectionProps = { constantOnMobile?: boolean };
+type EducationItem = typeof defaultEducation[number];
+type CertificationItem = typeof defaultCertifications[number];
 
-export default function EducationSection({ constantOnMobile = false }: EducationSectionProps) {
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
+type EducationSectionProps = {
+  constantOnMobile?: boolean;
+  educationItems?: EducationItem[];
+  certificationItems?: CertificationItem[];
+};
+
+export default function EducationSection({
+  constantOnMobile = false,
+  educationItems = defaultEducation,
+  certificationItems = defaultCertifications,
+}: EducationSectionProps) {
   const [isMobile, setIsMobile] = useState(false);
   const ringsRef = useRef<HTMLDivElement>(null);
   const ringsScrollRef = useRef<HTMLDivElement>(null);
@@ -75,7 +89,7 @@ export default function EducationSection({ constantOnMobile = false }: Education
     };
   }, []);
 
-  const degreesCount = education.length;
+  const degreesCount = educationItems.length;
   const yearsBuilding = new Date().getFullYear() - 2019;
 
   return (
@@ -89,7 +103,7 @@ export default function EducationSection({ constantOnMobile = false }: Education
             of <em>craft.</em>
           </h1>
           <p className="edu-banner-sub">
-            {degreesCount} degree{degreesCount !== 1 ? "s" : ""}. {certifications.length} certification{certifications.length !== 1 ? "s" : ""}. Continuous learning that never really stopped.
+            {degreesCount} degree{degreesCount !== 1 ? "s" : ""}. {certificationItems.length} certification{certificationItems.length !== 1 ? "s" : ""}. Continuous learning that never really stopped.
           </p>
         </div>
         <div className="edu-banner-right">
@@ -98,7 +112,7 @@ export default function EducationSection({ constantOnMobile = false }: Education
             <div className="edu-stat-l">Degrees</div>
           </div>
           <div className="edu-stat-block">
-            <div className="edu-stat-n">{certifications.length}</div>
+            <div className="edu-stat-n">{certificationItems.length}</div>
             <div className="edu-stat-l">Certifications</div>
           </div>
           <div className="edu-stat-block">
@@ -113,23 +127,19 @@ export default function EducationSection({ constantOnMobile = false }: Education
       </div>
 
       <div className="edu-accordion">
-        {education.map((item, idx) => {
+        {educationItems.map((item, idx) => {
           const tags = item.coursework
             ? item.coursework.split(",").slice(0, 5).map((s) => s.trim())
             : ["Software", "Systems", "Development"];
           const highlights = "highlights" in item && Array.isArray(item.highlights) ? item.highlights : [];
-          const isOpen = openIdx === idx;
           return (
             <div
               key={item.degree}
-              className={`edu-acc-item sr-reveal ${isOpen ? "open" : ""}`}
+              className="edu-acc-item sr-reveal"
               data-sr-delay={idx * 60}
             >
-              <button
-                type="button"
+              <div
                 className="edu-acc-trigger"
-                onClick={() => setOpenIdx(isOpen ? null : idx)}
-                aria-expanded={isOpen}
               >
                 <span className="edu-acc-idx">{String(idx + 1).padStart(2, "0")}</span>
                 <span>
@@ -137,24 +147,8 @@ export default function EducationSection({ constantOnMobile = false }: Education
                   <div className="edu-acc-school-sm">{item.school}</div>
                 </span>
                 <span className="edu-acc-year">{item.period}{item.location ? ` · ${item.location}` : ""}</span>
-                <span className="edu-acc-arrow">+</span>
-              </button>
-              <div
-                className="edu-acc-body"
-                style={
-                  isOpen
-                    ? {
-                        maxHeight: "1200px",
-                        overflow: "visible",
-                        transition: "max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
-                      }
-                    : {
-                        maxHeight: "0",
-                        overflow: "hidden",
-                        transition: "max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
-                      }
-                }
-              >
+              </div>
+              <div className="edu-acc-body">
                 <div className="edu-acc-inner">
                   <div className="edu-acc-content">
                     <div className="edu-acc-left">
@@ -241,9 +235,9 @@ export default function EducationSection({ constantOnMobile = false }: Education
         <div className="cert-ticker-label">
           // Certifications &amp; Credentials — hover to pause
         </div>
-        {certifications.length > 0 ? (
+        {certificationItems.length > 0 ? (
           <div className="cert-ticker">
-            {[...certifications, ...certifications, ...certifications, ...certifications].map((c, i) => (
+            {[...certificationItems, ...certificationItems, ...certificationItems, ...certificationItems].map((c, i) => (
               <div key={`${c.name}-${i}`} className="cert-tick-item">
                 <div className="cert-tick-dot" />
                 <span className="cert-tick-name">{c.name}</span>

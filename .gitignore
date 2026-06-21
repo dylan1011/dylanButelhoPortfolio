@@ -33,6 +33,7 @@ yarn-error.log*
 # IDE / Editor
 .idea/
 .vscode/
+.cursor/
 *.swp
 *.swo
 *~
@@ -47,3 +48,6 @@ coverage/
 
 # Misc
 *.pem
+
+# Local scratch / redesign exports (do not commit)
+reference/

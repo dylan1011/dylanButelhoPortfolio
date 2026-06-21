@@ -1,4 +1,4 @@
-/* Education page — accordion, rings, cert ticker */
+/* Education page — static degree list, rings, cert ticker */
 
 .edu-accordion {
   padding: 0 1.5rem;
@@ -30,24 +30,20 @@
 .edu-acc-trigger {
   width: 100%;
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 1.5rem;
   padding: 2rem 0;
   background: transparent;
   border: none;
-  cursor: pointer;
+  cursor: default;
   text-align: left;
-  transition: background 0.2s;
 }
 @media (min-width: 640px) {
   .edu-acc-trigger {
     gap: 2rem;
     padding: 2.5rem 0;
   }
-}
-.edu-acc-trigger:hover .edu-acc-title {
-  color: var(--portfolio-blue);
 }
 .edu-acc-idx {
   font-family: var(--font-mono), monospace;
@@ -90,38 +86,9 @@
   color: var(--portfolio-mid-gray);
   flex-shrink: 0;
 }
-.edu-acc-arrow {
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--portfolio-border, rgba(0, 0, 0, 0.12));
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s, background 0.25s;
-  font-size: 1.1rem;
-  color: var(--portfolio-mid-gray);
-  flex-shrink: 0;
-}
-.dark .edu-acc-arrow {
-  border-color: var(--portfolio-border);
-}
-.edu-acc-item.open .edu-acc-arrow {
-  transform: rotate(45deg);
-  border-color: var(--portfolio-blue);
-  color: var(--portfolio-blue);
-  background: rgba(0, 87, 255, 0.08);
-}
-.dark .edu-acc-item.open .edu-acc-arrow {
-  background: var(--portfolio-blue-dim);
-}
 .edu-acc-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.edu-acc-item.open .edu-acc-body {
-  max-height: 1200px;
+  max-height: none;
+  overflow: visible;
 }
 .edu-acc-inner {
   overflow: visible;
@@ -214,7 +181,7 @@
   color: var(--portfolio-blue);
 }
 
-/* Mobile: reuse same max-height behavior; no special overrides needed */
+/* Degree details remain visible on every viewport size. */
 
 .edu-rings-wrap {
   padding: 4rem 1rem 0;
@@ -544,93 +511,6 @@
   margin-left: 0.5rem;
 }
 
-/* Education page: hide + on all viewport sizes */
-.education-page .edu-acc-arrow {
-  display: none !important;
-}
-.education-page .edu-acc-trigger {
-  grid-template-columns: auto 1fr auto;
-}
-
-/* Education page: when dropdown open, swap font colors (black ↔ white) */
-.education-page .edu-acc-item.open .edu-acc-title {
-  color: #fff;
-}
-.education-page .edu-acc-item.open .edu-acc-trigger {
-  background: #000;
-}
-.education-page .edu-acc-item.open .edu-acc-school-sm,
-.education-page .edu-acc-item.open .edu-acc-year,
-.education-page .edu-acc-item.open .edu-acc-idx {
-  color: rgba(255, 255, 255, 0.85);
-}
-.education-page .edu-acc-item.open .edu-acc-body {
-  background: #000;
-  color: #fff;
-}
-.education-page .edu-acc-item.open .edu-acc-desc,
-.education-page .edu-acc-item.open .edu-acc-tag,
-.education-page .edu-acc-item.open .edu-acc-hl {
-  color: #fff;
-}
-.education-page .edu-acc-item.open .edu-acc-tag {
-  border-color: rgba(255, 255, 255, 0.35);
-}
-.education-page .edu-acc-item.open .edu-acc-hl {
-  background: rgba(255, 255, 255, 0.1);
-}
-.education-page .edu-acc-item.open .edu-acc-hl-icon {
-  color: #fff;
-}
-.dark .education-page .edu-acc-item.open .edu-acc-title {
-  color: #000;
-}
-.dark .education-page .edu-acc-item.open .edu-acc-trigger {
-  background: #fff;
-}
-.dark .education-page .edu-acc-item.open .edu-acc-school-sm,
-.dark .education-page .edu-acc-item.open .edu-acc-year,
-.dark .education-page .edu-acc-item.open .edu-acc-idx {
-  color: rgba(0, 0, 0, 0.75);
-}
-.dark .education-page .edu-acc-item.open .edu-acc-body {
-  background: #fff;
-  color: #000;
-}
-.dark .education-page .edu-acc-item.open .edu-acc-desc,
-.dark .education-page .edu-acc-item.open .edu-acc-tag,
-.dark .education-page .edu-acc-item.open .edu-acc-hl {
-  color: #000;
-}
-.dark .education-page .edu-acc-item.open .edu-acc-tag {
-  border-color: rgba(0, 0, 0, 0.25);
-}
-.dark .education-page .edu-acc-item.open .edu-acc-hl {
-  background: rgba(0, 0, 0, 0.08);
-}
-.dark .education-page .edu-acc-item.open .edu-acc-hl-icon {
-  color: #000;
-}
-
-/* Education page only: no animations, constant layout on mobile/responsive */
-@media (max-width: 1024px) {
-  .education-page .edu-acc-arrow,
-  .education-home-section .edu-acc-arrow {
-    display: none !important;
-  }
-  .education-page .edu-acc-item .edu-acc-body,
-  .education-home-section .edu-acc-item .edu-acc-body {
-    max-height: none !important;
-    overflow: visible !important;
-    transition: none !important;
-  }
-  .education-page .edu-acc-trigger,
-  .education-home-section .edu-acc-trigger {
-    pointer-events: none;
-    cursor: default;
-    grid-template-columns: auto 1fr auto;
-  }
-}
 @media (max-width: 899px) {
   .education-page .sr-reveal {
     opacity: 1;
@@ -650,12 +530,6 @@
   }
   .education-page .ring-item .ring-fg {
     stroke-dashoffset: var(--offset, 0);
-  }
-  .education-page .edu-acc-trigger:hover .edu-acc-title {
-    color: inherit;
-  }
-  .education-page .edu-acc-item.open .edu-acc-arrow {
-    transform: none;
   }
   .education-page .edu-acc-tag {
     pointer-events: none;

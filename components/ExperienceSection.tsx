@@ -1,9 +1,17 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { experience, skillCategories } from "@/data/resume";
+import { experience as defaultExperience, skillCategories } from "@/data/resume";
 
-export default function ExperienceSection() {
+type ExperienceItem = typeof defaultExperience[number];
+
+type ExperienceSectionProps = {
+  experienceItems?: ExperienceItem[];
+};
+
+export default function ExperienceSection({
+  experienceItems = defaultExperience,
+}: ExperienceSectionProps) {
   const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,7 +50,7 @@ export default function ExperienceSection() {
       <div className="timeline timeline-portfolio">
         <div ref={progressRef} className="timeline-progress" aria-hidden />
 
-        {experience.map((job, idx) => {
+        {experienceItems.map((job, idx) => {
           const tags = "stack" in job && Array.isArray(job.stack) ? job.stack : [];
           const isCurrent = job.period.toLowerCase().includes("present");
           return (

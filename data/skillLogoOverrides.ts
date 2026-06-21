@@ -5,6 +5,7 @@
 export const SKILL_LOGO_OVERRIDES: Record<string, string> = {
   java: "/logos/java.png",
   amazonaws: "/logos/aws.png",
+  matplotlib: "/logos/matplotlib.svg",
   tableau: "/logos/tableau.png",
   powerbi: "/logos/powerbi.png",
   microsoftexcel: "/logos/excel.png",

@@ -1,9 +1,9 @@
 export const profile = {
   name: "Dylan Clement Butelho",
   shortName: "Dylan Butelho",
-  tagline: "Building innovative software solutions.",
+  tagline: "Full-stack, ML, and scalable systems.",
   subtitle:
-    "Full-Stack Developer & M.S. in Computer Science — modern web applications, APIs, ML/AI & scalable systems.",
+    "Computer Science graduate with a master's degree from Syracuse University, experienced in full-stack development, machine learning, scalable systems, Python, JavaScript, and data-driven applications on AWS.",
   location: "New York, USA",
   phone: "+1 (315) 491-1371",
   email: "dylanbutelho@gmail.com",
@@ -18,88 +18,89 @@ export const education = [
     degree: "M.S. Computer Science",
     school: "Syracuse University",
     location: "Syracuse, NY",
-    period: "May 2026",
+    period: "August 2024 – May 2026 (Expected)",
     logoUrl: "/logos/syracuse-university.png",
     coursework:
-      "Design and Analysis of Algorithms, Computer Architecture, Natural Language Processing (NLP), Assured Programming with Formal Methods, Intro to Artificial Intelligence (AI), Operating Systems, Agentic AI, Database Management Systems, Cryptography, Machine Learning.",
+      "Data Structures & Algorithms (DSA), Natural Language Processing (NLP), Computer Architecture, Operating Systems, Artificial Intelligence (AI), Machine Learning (ML), Database Management Systems (DBMS), Cryptography & Network Security, Automata & Formal Methods, Agentic AI.",
     highlights: [
-      "Focus on algorithms, AI/ML, and systems. Coursework in NLP, cryptography, and database systems.",
-      "Relevant areas: Machine Learning, Agentic AI, Computer Architecture, Operating Systems.",
+      "Graduate focus on algorithms, AI/ML, systems, and secure software.",
+      "Coursework spans NLP, ML, DBMS, cryptography, and agentic AI.",
     ],
   },
   {
-    degree: "Bachelor of Engineering in Information Technology",
+    degree: "B.E. Information Technology",
     school: "University of Mumbai, St. Francis Institute of Technology",
-    location: "India",
-    period: "May 2023",
+    location: "Mumbai, India",
+    period: "August 2019 – May 2023",
     logoUrl: "/logos/university-of-mumbai.png",
-    coursework: null,
+    coursework:
+      "Computer Networks (CN), Network Security, DevOps, Data Mining & Business Intelligence (BI), Big Data Analytics, Cloud Computing, Blockchain, Internet of Things (IoT), Robotics.",
     highlights: [
-      "Core focus on software development, databases, and information systems.",
+      "Undergraduate foundation in networks, security, cloud, data, and IoT.",
     ],
   },
 ];
 
 export const experience = [
   {
-    role: "App Developer",
+    role: "Software Engineer",
     company: "iConsult Collaborative",
-    period: "January 2026 – Present",
+    location: "Syracuse, NY",
+    period: "Jan 2026 – Present",
     logoUrl: "/logos/iconsult-syracuse.png",
     bullets: [
-      "Designed, developed, and maintained application features aligned with business and client requirements.",
-      "Built responsive and user-friendly interfaces to ensure consistent performance across devices.",
-      "Integrated APIs and managed application data flow to support core functionalities.",
-      "Collaborated with cross-functional teams to test, debug, and optimize application performance.",
+      "Built and maintained high-availability backend services in Python and Go that integrate internal tools with broader platform ecosystems; used Terraform to manage serverless infrastructure on AWS and keep reliability tooling as resilient as the services it monitors.",
+      "Built AI agents using LangChain and LangGraph that ingest system telemetry and surface real-time summaries and root-cause hypotheses for on-call engineers, cutting average time to identify incident cause from around 25 minutes to under 10 minutes across 3 client environments.",
+      "Used Claude Code and GitHub Copilot daily to accelerate code reviews, generate test coverage for new reliability services, and replace roughly 4 hours per week of repetitive manual tasks with automated or AI-assisted workflows; verified all AI-generated code against security and quality standards before merging.",
+      "Implemented prompt engineering workflows to assist in debugging complex system failures, generating structured runbooks, and producing technical documentation that the wider team actually reads and uses.",
     ],
-    stack: ["React", "TypeScript", "APIs", "Cross-platform"],
+    stack: ["Python", "AWS", "Terraform", "LangChain", "LangGraph"],
   },
   {
-    role: "Software Developer",
+    role: "Software Engineer",
     company: "Vervali Systems",
-    location: "India",
-    period: "April 2024 – July 2024",
+    location: "Mumbai, India",
+    period: "Jan 2024 – Jul 2024",
     logoUrl: "/logos/vervali.png",
     bullets: [
-      "Integrated payment and shipping solutions using Paystack, PayPal, and DHL APIs to streamline e-commerce transactions.",
-      "Converted Shopify data to Omnitron platform using Python with Pandas and Requests for efficient data migration.",
-      "Designed and implemented JSON-based data structures to optimize workflows and improve system performance.",
-      "Developed responsive user interfaces using HTML and CSS to enhance user experience.",
-      "Collaborated with clients to gather requirements, automate processes, and improve operational efficiency.",
-      "Contributed to scripting, data management, and process automation for multiple e-commerce projects.",
+      "Wrote production Python and Go services for a distributed SaaS platform with 10,000 active users on AWS; used Terraform for infrastructure as code across serverless and containerized workloads and kept deployments reliable through automated testing and CI/CD pipelines that cut release cycle time from about 2 hours to under 20 minutes.",
+      "Built monitoring and alerting systems that caught around 35 production issues before users reported them over 6 months, and worked with senior engineers to implement automated root-cause analysis that reduced mean time to resolution by about 30%.",
+      "Applied LLM-based tooling to automate log analysis and incident triage, which freed the on-call team from manually scanning logs during incidents and made post-mortems faster to write; used Git throughout with consistent branching practices and code reviews on every merge.",
     ],
-    stack: ["Python", "Pandas", "Shopify", "APIs", "HTML/CSS"],
+    stack: ["Python", "AWS", "Terraform", "CI/CD", "Monitoring"],
   },
 ];
 
 export const academicProjects = [
   {
-    title: "AI-Driven Plant Pathology Detection",
+    title: "Orange Bot — AI Agent for Real-Time Telemetry and Incident Context",
     description:
-      "CNN-based plant disease classification using TensorFlow. Flask web app for uploading leaf images and receiving disease predictions with treatment suggestions. Trained on Kaggle datasets with image preprocessing and augmentation.",
-    tags: ["TensorFlow", "Flask", "CNN", "Python", "HTML/CSS"],
-    icon: "leaf",
-  },
-  {
-    title: "Environmental Data Analysis & ML-Driven Air Quality Classification",
-    description:
-      "IoT system for real-time environmental data (humidity, temperature, gas levels). Random Forest for pollutant classification and K-Means clustering for air quality patterns. Data processing and visualization with Python and TensorFlow.",
-    tags: ["IoT", "TensorFlow", "Random Forest", "K-Means", "Python"],
+      "Built a multi-agent system in Python and Go that ingests telemetry data and provides on-call engineers with real-time summaries, historical context, and automated root-cause hypotheses; uses LangGraph for agent orchestration, Terraform for serverless infrastructure on AWS, and Claude Code throughout development to accelerate code quality and test coverage. Applied prompt engineering to help the agent generate structured incident summaries and triage recommendations from raw log data; validated all AI-generated outputs against accuracy and reliability standards before the system was put into use in a live environment.",
+    tags: ["Python", "Go", "LangGraph", "LangChain", "AWS", "Terraform", "Docker", "Prometheus", "Claude Code"],
     icon: "chart",
   },
   {
-    title: "Collaborative Filtering & Market Basket Analysis for Product Recommendations",
+    title: "H1B JobPilot — High-Availability AI Services Platform (In Progress)",
     description:
-      "E-commerce web application for pet products with personalized recommendations. Collaborative filtering (Pearson Correlation) and Market Basket Analysis for frequently bought-together items. Full-stack Python, Flask, HTML, and CSS.",
-    tags: ["Flask", "Python", "Collaborative Filtering", "Market Basket Analysis"],
-    icon: "cart",
+      "Building a set of high-availability AI services in Python and Go managed entirely through Terraform on AWS, with Lambda functions, SQS queues, and CloudWatch monitoring to keep the system resilient; uses Claude Code and GitHub Copilot for pair programming and automated test generation, and validates all AI-generated infrastructure outputs before deployment.",
+    tags: ["Python", "Go", "Terraform", "AWS Lambda", "SQS", "CloudWatch", "Docker", "Claude Code", "GitHub Copilot"],
+    icon: "briefcase",
+  },
+  {
+    title: "Environmental IoT Reliability Pipeline",
+    description:
+      "Built a real-time reliability monitoring pipeline in Python and Go on Linux that collects sensor telemetry, detects anomalies automatically, and surfaces alerts before they become incidents; managed all infrastructure with Terraform on AWS and built Grafana dashboards that give the team instant visibility into system health without digging through raw logs.",
+    tags: ["Python", "Go", "AWS", "Terraform", "Prometheus", "Grafana", "Docker", "Linux", "Git"],
+    icon: "chart",
   },
 ];
 
-/** Certifications for education page ticker. Add entries as needed. */
+/** Certifications for education page ticker. */
 export const certifications: Array<{ name: string; issuer: string; year: string }> = [
-  { name: "Cisco Python Essentials I", issuer: "Cisco", year: "" },
-  { name: "Cisco Python Essentials II", issuer: "Cisco", year: "" },
+  { name: "AWS Certified AI Practitioner (AIF-C01)", issuer: "Amazon Web Services", year: "" },
+  { name: "AWS Certified Developer – Associate", issuer: "Amazon Web Services", year: "In Progress" },
+  { name: "Cisco Python Essentials I & II", issuer: "Cisco Networking Academy", year: "" },
+  { name: "Cisco Data Science Essentials with Python", issuer: "Cisco Networking Academy", year: "" },
 ];
 
 // Skill slug = simpleicons.org slug for logo (cdn.simpleicons.org/slug)
@@ -120,13 +121,15 @@ export const skillCategories = [
     skills: [
       { name: "Flask", slug: "flask" },
       { name: "FastAPI", slug: "fastapi" },
+      { name: "Django", slug: "django" },
       { name: "Express.js", slug: "express" },
       { name: "Node.js", slug: "nodedotjs" },
+      { name: "Next.js", slug: "nextdotjs" },
       { name: "React", slug: "react" },
       { name: "React Native", slug: "react" },
-      { name: "Next.js", slug: "nextdotjs" },
-      { name: "Flutter", slug: "flutter" },
       { name: "TypeScript", slug: "typescript" },
+      { name: "Celery", slug: "celery" },
+      { name: "GraphQL", slug: "graphql" },
     ],
   },
   {
@@ -135,8 +138,10 @@ export const skillCategories = [
       { name: "Pandas", slug: "pandas" },
       { name: "NumPy", slug: "numpy" },
       { name: "Scikit-Learn", slug: "scikitlearn" },
+      { name: "Matplotlib", slug: "matplotlib" },
       { name: "PyTorch", slug: "pytorch" },
       { name: "TensorFlow", slug: "tensorflow" },
+      { name: "LangChain", slug: "langchain" },
     ],
   },
   {
@@ -144,21 +149,28 @@ export const skillCategories = [
     skills: [
       { name: "MySQL", slug: "mysql" },
       { name: "PostgreSQL", slug: "postgresql" },
+      { name: "SQL Server", slug: "microsoftsqlserver" },
       { name: "MongoDB", slug: "mongodb" },
       { name: "Supabase", slug: "supabase" },
+      { name: "Redis", slug: "redis" },
+    ],
+  },
+  {
+    title: "Cloud & DevOps",
+    skills: [
+      { name: "AWS", slug: "amazonaws" },
+      { name: "Cloudflare", slug: "cloudflare" },
+      { name: "Docker", slug: "docker" },
+      { name: "Kubernetes", slug: "kubernetes" },
+      { name: "Jenkins", slug: "jenkins" },
+      { name: "Git", slug: "git" },
+      { name: "GitHub", slug: "github" },
     ],
   },
   {
     title: "Tools & Platforms",
     skills: [
-      { name: "Git", slug: "git" },
-      { name: "GitHub", slug: "github" },
-      { name: "Jenkins", slug: "jenkins" },
-      { name: "Docker", slug: "docker" },
-      { name: "Kubernetes", slug: "kubernetes" },
-      { name: "AWS", slug: "amazonaws" },
-      { name: "Redis", slug: "redis" },
-      { name: "GraphQL", slug: "graphql" },
+      { name: "n8n", slug: "n8n" },
       { name: "Shopify", slug: "shopify" },
       { name: "WordPress", slug: "wordpress" },
       { name: "Wix", slug: "wix" },
@@ -174,24 +186,25 @@ export const skillCategories = [
 // For home page ticker strip — all skills with logos (from skillCategories, order preserved)
 export const homeSkillHighlights = (() => {
   const seen = new Set<string>();
-  return skillCategories.flatMap((cat) =>
-    cat.skills.filter((s) => {
-      if (seen.has(s.name)) return false;
-      seen.add(s.name);
-      return true;
-    })
-  ).map((s) => ({ name: s.name, slug: s.slug }));
+  return skillCategories
+    .flatMap((cat) =>
+      cat.skills.filter((s) => {
+        if (seen.has(s.name)) return false;
+        seen.add(s.name);
+        return true;
+      })
+    )
+    .map((s) => ({ name: s.name, slug: s.slug }));
 })();
 
 /**
  * Core Proficiencies % for education page — aligned with My Tech Stack cards.
- * Based on resume: education (M.S. CS, B.E. IT), experience, projects, and skill categories.
  */
 export const coreProficiencyPct: Record<string, number> = {
-  "Cloud": 72,
-  "DevOps": 78,
-  "AI/ML": 92,
-  "Databases": 88,
-  "Tools": 90,
-  "Full-Stack": 94,
+  "Cloud": 76,
+  "DevOps": 80,
+  "AI/ML": 94,
+  "Databases": 90,
+  "Tools": 88,
+  "Full-Stack": 95,
 };
