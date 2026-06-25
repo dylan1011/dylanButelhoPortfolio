@@ -77,13 +77,6 @@ export default function ExperienceSection({
                 {"location" in job && job.location && (
                   <div className="timeline-location">{job.location}</div>
                 )}
-                <div className="timeline-achievements">
-                  {job.bullets.map((bullet, i) => (
-                    <div key={i} className="achievement">
-                      {bullet}
-                    </div>
-                  ))}
-                </div>
                 {tags.length > 0 && (
                   <div className="timeline-stack">
                     {tags.map((t) => (
