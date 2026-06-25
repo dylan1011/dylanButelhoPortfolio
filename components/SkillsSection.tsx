@@ -17,6 +17,9 @@ const allSkillsList = (() => {
   );
 })();
 
+const SKILL_CARD_ICON_SIZE = 44;
+const SKILL_LOGO_SIZE = 56;
+
 export default function SkillsSection() {
   return (
     <section className="skills pt-4 sm:pt-6 lg:pt-8 pb-12 sm:pb-16 lg:pb-[120px] px-4 sm:px-6 lg:px-12 overflow-hidden">
@@ -50,8 +53,8 @@ export default function SkillsSection() {
               />
               <SkillBlockIcon
                 name={card.title}
-                size={32}
-                className="block mb-4"
+                size={SKILL_CARD_ICON_SIZE}
+                className="block mb-5"
                 color={
                   card.bar === "b"
                     ? "var(--portfolio-blue)"
@@ -88,6 +91,7 @@ export default function SkillsSection() {
               const darkColor = isBlackLogo || isWhiteLogo ? "#ffffff" : brandColor;
               const overrideSrc = SKILL_LOGO_OVERRIDES[skill.slug];
               const useBlendLighten = SKILL_LOGO_BLEND_LIGHTEN_SLUGS.has(skill.slug);
+              const isAwsLogo = skill.slug === "amazonaws";
 
               return (
                 <li
@@ -100,15 +104,16 @@ export default function SkillsSection() {
                         <img
                           src={overrideSrc}
                           alt={skill.name}
-                          width={40}
-                          height={40}
+                          width={SKILL_LOGO_SIZE}
+                          height={SKILL_LOGO_SIZE}
                           className={`relative z-10 origin-bottom will-change-transform transition-transform duration-200 group-hover:scale-[1.85] group-hover:-translate-y-1 dark:hidden object-contain ${useBlendLighten ? "mix-blend-lighten" : ""}`}
                         />
                         <img
                           src={overrideSrc}
                           alt={skill.name}
-                          width={40}
-                          height={40}
+                          width={SKILL_LOGO_SIZE}
+                          height={SKILL_LOGO_SIZE}
+                          style={isAwsLogo ? { filter: "invert(1) brightness(1.7)" } : undefined}
                           className={`relative z-10 origin-bottom will-change-transform transition-transform duration-200 group-hover:scale-[1.85] group-hover:-translate-y-1 hidden dark:block object-contain ${useBlendLighten ? "mix-blend-lighten" : ""}`}
                         />
                       </>
@@ -117,14 +122,14 @@ export default function SkillsSection() {
                         <SkillIcon
                           slug={skill.slug}
                           name={skill.name}
-                          size={40}
+                          size={SKILL_LOGO_SIZE}
                           color={lightColor}
                           className="relative z-10 origin-bottom will-change-transform transition-transform duration-200 group-hover:scale-[1.85] group-hover:-translate-y-1 dark:hidden"
                         />
                         <SkillIcon
                           slug={skill.slug}
                           name={skill.name}
-                          size={40}
+                          size={SKILL_LOGO_SIZE}
                           color={darkColor}
                           className="relative z-10 origin-bottom will-change-transform transition-transform duration-200 group-hover:scale-[1.85] group-hover:-translate-y-1 hidden dark:block"
                         />

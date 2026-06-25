@@ -71,16 +71,37 @@ export default function Home() {
           {[...homeSkillHighlights, ...homeSkillHighlights].map((s, i) => {
             const overrideSrc = SKILL_LOGO_OVERRIDES[s.slug];
             const useBlendLighten = SKILL_LOGO_BLEND_LIGHTEN_SLUGS.has(s.slug);
+            const isAws = s.slug === "amazonaws";
             return (
               <span key={`${s.slug}-${i}`} className="ticker-item whitespace-nowrap flex items-center gap-2">
                 {overrideSrc ? (
-                  <img
-                    src={overrideSrc}
-                    alt={s.name}
-                    width={22}
-                    height={22}
-                    className={`object-contain ${useBlendLighten ? "mix-blend-lighten" : ""}`}
-                  />
+                  isAws ? (
+                    <>
+                      <img
+                        src={overrideSrc}
+                        alt={s.name}
+                        width={22}
+                        height={22}
+                        className={`object-contain dark:hidden ${useBlendLighten ? "mix-blend-lighten" : ""}`}
+                      />
+                      <img
+                        src={overrideSrc}
+                        alt={s.name}
+                        width={22}
+                        height={22}
+                        style={{ filter: "invert(1) brightness(1.7)" }}
+                        className={`object-contain hidden dark:block ${useBlendLighten ? "mix-blend-lighten" : ""}`}
+                      />
+                    </>
+                  ) : (
+                    <img
+                      src={overrideSrc}
+                      alt={s.name}
+                      width={22}
+                      height={22}
+                      className={`object-contain ${useBlendLighten ? "mix-blend-lighten" : ""}`}
+                    />
+                  )
                 ) : (
                   <SkillIcon
                     slug={s.slug}

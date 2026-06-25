@@ -4,6 +4,14 @@
  */
 export const SKILL_BRAND_COLORS: Record<string, string> = {
   amazonaws: "#FF9900",
+  googlecloud: "#4285F4",
+  terraform: "#844FBA",
+  prometheus: "#E6522C",
+  grafana: "#F46800",
+  datadog: "#632CA6",
+  githubactions: "#2088FF",
+  linux: "#FCC624",
+  gnubash: "#4EAA25",
   docker: "#2496ED",
   nextdotjs: "#000000",
   mongodb: "#47A248",

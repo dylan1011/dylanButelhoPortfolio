@@ -22,6 +22,42 @@ export default function SkillIcon({ slug, name, size = 28, className = "", color
   const icon = SIMPLE_ICON_PATHS[slug];
   const fill = color || icon?.hex || "currentColor";
 
+  if (slug === "tableau") {
+    return (
+      <svg
+        role="img"
+        aria-label={name}
+        viewBox="0 0 128 128"
+        width={size}
+        height={size}
+        className={`object-contain ${className}`}
+      >
+        <g fill="none" strokeLinecap="square">
+          <g stroke="#4E79A7" strokeWidth="8">
+            <path d="M64 8v26M51 21h26" />
+            <path d="M18 52v24M6 64h24" />
+            <path d="M101 31v30M86 46h30" />
+          </g>
+          <g stroke="#F28E2B" strokeWidth="10">
+            <path d="M64 45v38M45 64h38" />
+          </g>
+          <g stroke="#E15759" strokeWidth="8">
+            <path d="M33 79v30M18 94h30" />
+          </g>
+          <g stroke="#59A14F" strokeWidth="7">
+            <path d="M94 83v26M81 96h26" />
+          </g>
+          <g stroke="#B07AA1" strokeWidth="7">
+            <path d="M64 95v24M52 107h24" />
+          </g>
+          <g stroke="#76B7B2" strokeWidth="6">
+            <path d="M107 76v20M97 86h20" />
+          </g>
+        </g>
+      </svg>
+    );
+  }
+
   if (!icon && FALLBACK_ICON_PATHS[slug]) {
     return (
       <svg
