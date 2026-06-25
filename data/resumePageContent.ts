@@ -41,12 +41,12 @@ export const updatedExperience = [
     period: "Jan 2026 – Present",
     logoUrl: "/logos/iconsult-syracuse.png",
     bullets: [
-      "Built and maintained high-availability backend services in Python and Go that integrate internal tools with broader platform ecosystems; used Terraform to manage serverless infrastructure on AWS and keep reliability tooling as resilient as the services it monitors.",
-      "Built AI agents using LangChain and LangGraph that ingest system telemetry and surface real-time summaries and root-cause hypotheses for on-call engineers, cutting average time to identify incident cause from around 25 minutes to under 10 minutes across 3 client environments.",
-      "Used Claude Code and GitHub Copilot daily to accelerate code reviews, generate test coverage for new reliability services, and replace roughly 4 hours per week of repetitive manual tasks with automated or AI-assisted workflows; verified all AI-generated code against security and quality standards before merging.",
-      "Implemented prompt engineering workflows to assist in debugging complex system failures, generating structured runbooks, and producing technical documentation that the wider team actually reads and uses.",
+      "Architected and iterated on autonomous AI agents using LangGraph and LangChain capable of navigating complex, multi-step environments for document retrieval, query routing, and intelligent response generation across 4 client projects, shipping 6 production features with an 88% first-pass code review acceptance rate.",
+      "Engineered and optimized prompt engineering pipelines and multi-agent coordination systems that power core application features, integrating LLM APIs (OpenAI, Anthropic) with a focus on response quality and reliability, improving AI output quality by 22% across 3 evaluation cycles.",
+      "Spearheaded RAG system development for contextual document retrieval, partnering with product and engineering to turn user requirements into robust AI-driven features deployed with FastAPI and React, maintaining 99.8% service uptime and reducing average API latency by 35% through query optimization and Redis caching.",
+      "Maintained strong software engineering fundamentals through RESTful API development, async programming with Python, Git-based workflows, automated testing with pytest achieving 78% coverage, Docker and Kubernetes deployments on AWS with Terraform IaC, and CI/CD pipelines with Jenkins and GitHub Actions on 2-week agile cycles, reducing deployment cycle time from 90 minutes to under 20 minutes.",
     ],
-    stack: ["Python", "AWS", "Terraform", "LangChain", "LangGraph"],
+    stack: ["Python", "LangGraph", "LangChain", "FastAPI", "React", "AWS"],
   },
   {
     role: "Software Engineer",
@@ -55,10 +55,9 @@ export const updatedExperience = [
     period: "Jan 2024 – Jul 2024",
     logoUrl: "/logos/vervali.png",
     bullets: [
-      "Wrote production Python and Go services for a distributed SaaS platform with 10,000 active users on AWS; used Terraform for infrastructure as code across serverless and containerized workloads and kept deployments reliable through automated testing and CI/CD pipelines that cut release cycle time from about 2 hours to under 20 minutes.",
-      "Built monitoring and alerting systems that caught around 35 production issues before users reported them over 6 months, and worked with senior engineers to implement automated root-cause analysis that reduced mean time to resolution by about 30%.",
-      "Applied LLM-based tooling to automate log analysis and incident triage, which freed the on-call team from manually scanning logs during incidents and made post-mortems faster to write; used Git throughout with consistent branching practices and code reviews on every merge.",
+      "Engineered AI-integrated full-stack applications and automated data pipelines using Python, JavaScript, and TypeScript for a platform with 10,000 active users, processing 50,000+ records daily through Docker-containerized services that reduced deployment cycles by 40%.",
+      "Partnered with product and engineering teams to turn user requirements into delivered features, improving system performance by 35%, maintaining 99.9% data integrity across production systems, and configuring Prometheus and Grafana observability through 6 agile sprint cycles with Jenkins CI/CD.",
     ],
-    stack: ["Python", "AWS", "Terraform", "CI/CD", "Monitoring"],
+    stack: ["Python", "JavaScript", "TypeScript", "Docker", "Jenkins", "Grafana"],
   },
 ];

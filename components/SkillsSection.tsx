@@ -92,6 +92,8 @@ export default function SkillsSection() {
               const overrideSrc = SKILL_LOGO_OVERRIDES[skill.slug];
               const useBlendLighten = SKILL_LOGO_BLEND_LIGHTEN_SLUGS.has(skill.slug);
               const isAwsLogo = skill.slug === "amazonaws";
+              const shouldInvertDarkLogo = isAwsLogo || skill.slug === "cursor";
+              const shouldInvertLightLogo = skill.slug === "openai";
 
               return (
                 <li
@@ -106,6 +108,7 @@ export default function SkillsSection() {
                           alt={skill.name}
                           width={SKILL_LOGO_SIZE}
                           height={SKILL_LOGO_SIZE}
+                          style={shouldInvertLightLogo ? { filter: "invert(1)" } : undefined}
                           className={`relative z-10 origin-bottom will-change-transform transition-transform duration-200 group-hover:scale-[1.85] group-hover:-translate-y-1 dark:hidden object-contain ${useBlendLighten ? "mix-blend-lighten" : ""}`}
                         />
                         <img
@@ -113,7 +116,7 @@ export default function SkillsSection() {
                           alt={skill.name}
                           width={SKILL_LOGO_SIZE}
                           height={SKILL_LOGO_SIZE}
-                          style={isAwsLogo ? { filter: "invert(1) brightness(1.7)" } : undefined}
+                          style={shouldInvertDarkLogo ? { filter: "invert(1) brightness(1.7)" } : undefined}
                           className={`relative z-10 origin-bottom will-change-transform transition-transform duration-200 group-hover:scale-[1.85] group-hover:-translate-y-1 hidden dark:block object-contain ${useBlendLighten ? "mix-blend-lighten" : ""}`}
                         />
                       </>

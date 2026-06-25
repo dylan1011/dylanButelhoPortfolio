@@ -72,16 +72,20 @@ export default function Home() {
             const overrideSrc = SKILL_LOGO_OVERRIDES[s.slug];
             const useBlendLighten = SKILL_LOGO_BLEND_LIGHTEN_SLUGS.has(s.slug);
             const isAws = s.slug === "amazonaws";
+            const shouldInvertDarkLogo = isAws || s.slug === "cursor";
+            const shouldInvertLightLogo = s.slug === "openai";
+            const useModeSpecificLogo = shouldInvertDarkLogo || shouldInvertLightLogo;
             return (
               <span key={`${s.slug}-${i}`} className="ticker-item whitespace-nowrap flex items-center gap-2">
                 {overrideSrc ? (
-                  isAws ? (
+                  useModeSpecificLogo ? (
                     <>
                       <img
                         src={overrideSrc}
                         alt={s.name}
                         width={22}
                         height={22}
+                        style={shouldInvertLightLogo ? { filter: "invert(1)" } : undefined}
                         className={`object-contain dark:hidden ${useBlendLighten ? "mix-blend-lighten" : ""}`}
                       />
                       <img
@@ -89,7 +93,7 @@ export default function Home() {
                         alt={s.name}
                         width={22}
                         height={22}
-                        style={{ filter: "invert(1) brightness(1.7)" }}
+                        style={shouldInvertDarkLogo ? { filter: "invert(1) brightness(1.7)" } : undefined}
                         className={`object-contain hidden dark:block ${useBlendLighten ? "mix-blend-lighten" : ""}`}
                       />
                     </>
